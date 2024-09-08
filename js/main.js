@@ -3,6 +3,7 @@ const items = getAllItems();
 var totalProgress = 0; //All fetches add to this a value of 0.0-1.0 for their progress in fetching.
 var totalFetches = 0; //Fetches running or consecutively started
 var tier;
+var server; 
 var enchantment;
 var quality;
 var maxAgeBM;
@@ -48,28 +49,13 @@ function getTime(url) {
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
+  server = document.getElementById("server").value;
   tier = document.getElementById("tier").value;
   enchantment = document.getElementById("enchantment").value;
   quality = document.getElementById("quality").value;
   maxAgeBM = document.getElementById("maxAgeBM").value;
   maxAgeCity = document.getElementById("maxAgeCity").value;
   minProfit = document.getElementById("minProfit").value;
-
-  // sets currentUTCTime to UTC time from a 3rd party
-  // found this somewhere on stackoverflow
-  // don't put it inside any loops as this will make too many requests
-  //getTime("http://worldtimeapi.org/api/timezone/Etc/UTC")
-  //  .then((response) => {
-  //    let dateObj = JSON.parse(response);
-  //    let dateTime = dateObj.datetime;
-  //    //console.log(dateObj);
-  //    //console.log(dateTime);
-  //    currentUTCTime = dateTime;
-  //  })
-  //  .catch((err) => {
-  //    //console.log(err);
-  //  });
-
 
   var city = [];
   var checkboxes = document.getElementById("cities").getElementsByTagName("input");
@@ -100,7 +86,7 @@ function getPrices() {
       var selected_items;
       selected_items = getItems(i, j);
 
-      fetchData("Prices", city, selected_items, quality, function () {
+      fetchData(server, "Prices", city, selected_items, quality, function () {
         printToConsole("API data received!\n");
         // Begin accessing JSON data here
         var data = JSON.parse(this.response);
@@ -561,7 +547,7 @@ function clearConsole() {
 
 // returns minutes since currentUTCTime and itemAge
 function getAge(itemAge) {
-  return Math.round((Date.parse(currentUTCTime) - Date.parse(new Date(itemAge.concat('Z')))) / 60000);
+  return Math.round((Date.now() - Date.parse(new Date(itemAge.concat('Z')))) / 60000);
 }
 
 // Returns the parsed json response from the API
@@ -570,16 +556,31 @@ function getAge(itemAge) {
 // City: array of cities names to fetch from
 // Selected_Items: array of items to fetch (max about 300)
 // Quality: {0,1,2,3,4,5} if 0 will fetch all qualities 1 = Normal and so on
-function fetchData(type, cities, selected_items, quality, callback) {
+function fetchData(server, type, cities, selected_items, quality, callback) {
   // Create a request variable and assign a new XMLHttpRequest object to it.
+
+  var url; 
+  switch(server){
+    case 'europe': 
+      url = 'https://europe.albion-online-data.com/';
+      break;
+    case 'asia': 
+      url = "https://east.albion-online-data.com/";
+      break;
+    case 'americas': 
+      url = "https://west.albion-online-data.com/";
+      break;
+    default: 
+      url = 'https://europe.albion-online-data.com/';
+  };
+
   var request = new XMLHttpRequest();
 
-  var url = "https://www.albionflipper.ml/";
   var view = "api/v2/stats/" + type + "/";
   var locations = [cities.join(","), "Black Market"]
   var link = url + view + selected_items.join(",") + "?locations=" + locations.join(",") + "&qualities=" + quality;
   //console.log("API link is "+link);
-  printToConsole("Requesting API for " + type + " with " + selected_items.length + " items" + " with quality " + quality + "\n");
+  printToConsole("Requesting " + server + " API for " + type + " with " + selected_items.length + " items" + " with quality " + quality + "\n");
   // Open a new connection, using the GET request on the URL endpoint
   request.open('GET', link, true)
 

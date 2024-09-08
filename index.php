@@ -116,6 +116,14 @@
             <!-- Form start -->
             <div class="col-md-5 col-sm-6">
               <h3 class="pt-2">Settings</h3>
+              <div class="server">
+                  <label for="server">Server</label>
+                  <select name="" id="server" class="custom-select form-control">
+                    <option value="europe">Europe</option>
+                    <option value="asia">Asia</option>
+                    <option value="americas">Americas</option>
+                  </select>
+              </div>
               <div class="form-row mb-0">
                 <div class="form-group col-sm-3">
                   <label for="tier">Tier</label>
