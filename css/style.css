@@ -84,3 +84,17 @@ header.container-fluid {
     margin-top: 0;
   }
   
+          /* Style for the message container */
+          .message-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none; /* Initially hidden */
+            z-index: 1000; /* Make sure it appears on top */
+        }

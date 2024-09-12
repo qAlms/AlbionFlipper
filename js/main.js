@@ -15,7 +15,7 @@ const ONE_WEEK = 10080; // change this to maxAgeCity if you don't want Caerleon 
 var profitableTrades = 0;
 var freshTrades = 0;
 var totalApprovedTrades = 0;
-var currentUTCTime;
+var currentUTCTime; 
 
 
 //Takes the raw items string and converts it into array of an objects
@@ -49,6 +49,7 @@ function getTime(url) {
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
+  hideMessage();
   server = document.getElementById("server").value;
   tier = document.getElementById("tier").value;
   enchantment = document.getElementById("enchantment").value;
@@ -81,6 +82,7 @@ function getPrices() {
 
   resetProgress(); //Reset progress total and progressbar
   totalFetches = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
+  var count = 0;
   for (var i = tierStart; i < tierEnd + 1; i++) {
     for (var j = enchantmentStart; j < enchantmentEnd + 1; j++) {
       var selected_items;
@@ -115,7 +117,6 @@ function getPrices() {
             } else {
               item.BM_order_difference = "Outdated";
             }
-
             addToTable("table",
               (item.tier + "." + item.enchantment),
               item.name,
@@ -134,11 +135,23 @@ function getPrices() {
               item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
               item.caerleonProfit < 1 ? "-" : item.caerleonAge // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
             );
-          }
+          }      
         }
       });
     }
   }
+}
+
+function showMessage(message) {
+  var container = document.getElementById('messageContainer');
+  var text = document.getElementById('messageText');
+  text.textContent = message; // Set the message text
+  container.style.display = 'block'; // Show the message
+}
+
+function hideMessage() {
+  var container = document.getElementById('messageContainer');
+  container.style.display = 'none'; // Hide the message
 }
 
 function addProgress(progress) {
@@ -524,10 +537,13 @@ function filterDataByParameters(cities) {
   if (totalApprovedTrades == 0) {
     if (freshTrades == 0) {
       printToConsole("Data too old. Pick bigger max age or update the market via the Data Client.\n");
+      showMessage("Data too old. Pick bigger max age or update the market via the Data Client.")
     } else if (profitableTrades == 0) {
       printToConsole("No profitable trades found. Try decreasing Min Profit.\n");
+      showMessage("No profitable trades found. Try decreasing Min Profit.");
     } else if (profitableTrades != 0 && freshTrades != 0) {
       printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
+      showMessage("No fresh and profitable items found. Adjust one of the parameters and try again.")
     }
   } else {
     printToConsole("Profitable and fresh items found!\n");
