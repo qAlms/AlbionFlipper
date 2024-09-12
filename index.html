@@ -124,17 +124,17 @@
                   </div>
                 </fieldset>
                 <div class="form-group mb-0">
-                  <label for="minProfitRange" class="sr-only">Minimum Profit</label>
+                  <label for="minProfitRange">Minimum Profit</label>
                   <input type="range" class="form-control-range" value="1" min="1" max="500000" id="minProfitRange">
                   <input type="number" class="form-control form-control-sm" id="minProfit" value="1">
                 </div>
                 <div class="form-group mb-0">
-                  <label for="maxAgeBMRange" class="sr-only">Maximum Black Market Age</label>
+                  <label for="maxAgeBMRange">Max. Black Market Age</label>
                   <input type="range" class="form-control-range" value="20" min="0" max="120" id="maxAgeBMRange">
                   <input type="number" class="form-control form-control-sm" id="maxAgeBM" value="20">
                 </div>
                 <div class="form-group mb-0">
-                  <label for="maxAgeCityRange" class="sr-only">Maximum City Age</label>
+                  <label for="maxAgeCityRange">Max. City Age</label>
                   <input type="range" class="form-control-range" value="20" min="0" max="120" id="maxAgeCityRange">
                   <input type="number" class="form-control form-control-sm" id="maxAgeCity" value="20">
                 </div>
@@ -452,6 +452,80 @@
       });
     });
   </script>
+  <!--
+      <script>
+        // Function to be triggered after DOM update
+        function onDomUpdate() {
+            console.log('DOM has been updated!');
+            var table = document.getElementById('table');
+            console.log(table.rows.length);
+            if ( table.rows.length <= 1 ) {
+              showMessage("No profitable flips found!");
+            }
+            else {
+              hideMessage();
+            }
+        }
+
+        // Set up MutationObserver
+        const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    onDomUpdate(); // Call function after DOM update
+                }
+            }
+        });
+
+        // Target node to observe
+        const targetNode = document.getElementById('table');
+
+        // Observer configuration
+        const config = { childList: true, subtree: true };
+
+        // Start observing
+        observer.observe(targetNode, config);
+  </script>
+-->
+<script>
+  // Function to be triggered on initial load
+  function onInitialLoad() {
+      console.log('Initial DOM load complete!');
+  }
+
+  // Function to be triggered after subsequent DOM updates
+  function onDomUpdate(count) {
+      console.log('DOM has been updated! ' + count);
+      var table = document.getElementById('table');
+      //console.log(table.rows.length);
+      if ( count > 4 && table.rows.length <= 1 ) {
+        showMessage("No profitable flips found!");
+      }
+      else {
+        hideMessage();
+      }
+  }
+
+  // Handle initial DOM load
+  document.addEventListener('DOMContentLoaded', () => {
+    var count = 0;
+      onInitialLoad(); // Call function after initial load
+      
+      // Set up MutationObserver for subsequent updates
+      const observer = new MutationObserver((mutationsList) => { 
+          for (const mutation of mutationsList) {
+              if (mutation.type === 'childList') {
+                  count = count + 1;
+                  onDomUpdate(count); // Call function after DOM update
+              }
+          }
+      });
+
+      // Target node to observe
+      const targetNode = document.getElementById('table');
+      const config = { childList: true, subtree: true };
+      observer.observe(targetNode, config);
+  });
+</script>
 
 </body>
 

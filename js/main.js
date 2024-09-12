@@ -538,13 +538,13 @@ function filterDataByParameters(cities) {
   if (totalApprovedTrades == 0) {
     if (freshTrades == 0) {
       printToConsole("Data too old. Pick bigger max age or update the market via the Data Client.\n");
-      showMessage("Data too old. Pick bigger max age or update the market via the Data Client.")
+      //showMessage("Data too old. Pick bigger max age or update the market via the Data Client.")
     } else if (profitableTrades == 0) {
       printToConsole("No profitable trades found. Try decreasing Min Profit.\n");
-      showMessage("No profitable trades found. Try decreasing Min Profit.");
+      //showMessage("No profitable trades found. Try decreasing Min Profit.");
     } else if (profitableTrades != 0 && freshTrades != 0) {
       printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
-      showMessage("No fresh and profitable items found. Adjust one of the parameters and try again.")
+      //showMessage("No fresh and profitable items found. Adjust one of the parameters and try again.")
     }
   } else {
     printToConsole("Profitable and fresh items found!\n");
