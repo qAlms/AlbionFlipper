@@ -1,6 +1,6 @@
 //Global values
 const items = getAllItems();
-var totalProgress = 0; //All fetches add to this a value of 0.0-1.0 for their progress in fetching.
+//var totalProgress = 0; //All fetches add to this a value of 0.0-1.0 for their progress in fetching.
 var totalFetches = 0; //Fetches running or consecutively started
 var tier;
 var server; 
@@ -81,7 +81,7 @@ function getPrices() {
     enchantmentEnd = 3;
   }
 
-  resetProgress(); //Reset progress total and progressbar
+  //resetProgress(); //Reset progress total and progressbar
   totalFetches = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
   var count = 0;
   for (var i = tierStart; i < tierEnd + 1; i++) {
@@ -154,7 +154,7 @@ function hideMessage() {
   var container = document.getElementById('messageContainer');
   container.style.display = 'none'; // Hide the message
 }
-
+/*
 function addProgress(progress) {
   totalProgress += progress;
   var overallProgress = (totalProgress / totalFetches);
@@ -163,10 +163,9 @@ function addProgress(progress) {
   document.getElementById("progress-text").innerText = Math.round(overallProgress * 100) + " %";
   if (Math.round(overallProgress * 100) / 100 == 1) //it can be a little bit over and under cause of calculation errors
     document.getElementById("progress").attributes.class.value = "progress-bar"; //Turn off active
-  //console.log(totalProgress);
-  //console.log(overallProgress);
+  console.log(totalProgress);
+  console.log(overallProgress);
 }
-
 function resetProgress() {
   totalProgress = 0;
   document.getElementById("progress-text").innerText = "0 %";
@@ -174,7 +173,7 @@ function resetProgress() {
   document.getElementById("progress").attributes[3] = 0;
   document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped active";
 }
-
+*/
 function formatMoney(amount, decimalCount = 0, decimal = ".", thousands = " ") {
   // it just works
   // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
@@ -601,17 +600,20 @@ function fetchData(server, type, cities, selected_items, quality, callback) {
   // Open a new connection, using the GET request on the URL endpoint
   request.open('GET', link, true)
 
+
   request.onload = callback;
+  /*
   var old = 0;
   var fresh = 0;
   request.onprogress = function (e) {
+    console.log(e);
     if (e.lengthComputable) {
       old = fresh;
       fresh = e.loaded / e.total;
       addProgress(fresh - old); // add the progress that was made since last check
     }
   }
-
+*/
   // Send request
   request.send();
 
