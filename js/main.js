@@ -49,6 +49,7 @@ function getTime(url) {
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
+  clearTable('table');
   hideMessage();
   server = document.getElementById("server").value;
   tier = document.getElementById("tier").value;
