@@ -1,4 +1,6 @@
 //Global values
+let totalAsyncCalls = 0;
+let completedAsyncCalls = 0;
 const items = getAllItems();
 //var totalProgress = 0; //All fetches add to this a value of 0.0-1.0 for their progress in fetching.
 var totalFetches = 0; //Fetches running or consecutively started
@@ -81,66 +83,84 @@ function getPrices() {
     enchantmentEnd = 3;
   }
 
-  //resetProgress(); //Reset progress total and progressbar
+  totalAsyncCalls = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
+  completedAsyncCalls = 0;
+  updateProgressBar(0);
+
   totalFetches = (tierEnd - tierStart + 1) * (enchantmentEnd - enchantmentStart + 1);
   var count = 0;
   for (var i = tierStart; i < tierEnd + 1; i++) {
     for (var j = enchantmentStart; j < enchantmentEnd + 1; j++) {
       var selected_items;
       selected_items = getItems(i, j);
-
-      fetchData(server, "Prices", city, selected_items, quality, function () {
-        printToConsole("API data received!\n");
-        // Begin accessing JSON data here
-        var data = JSON.parse(this.response);
-        //console.log('API object response: ');
-        //console.log(data);
-
-        br();
-        var cities = splitDataByCity(data);
-        if (!calculateAge(cities))
-          return;
-        if (!calculateProfits(cities))
-          return;
-        if (!filterDataByParameters(cities))
-          return;
-
-        var item;
-        for (var i = 1; i < cities.length; i++) {
-          for (var j = 0; j < cities[i].length; j++) {
-            item = cities[i][j];
-            addItemProperties(item);
-
-            if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
-              item.BM_order_difference = formatMoney(item.BM_order_difference) + " (Outdated)";
-            } else if (item.BM_order_difference > 0) {
-              item.BM_order_difference = formatMoney(item.BM_order_difference);
-            } else {
-              item.BM_order_difference = "Outdated";
-            }
-            addToTable("table",
-              (item.tier + "." + item.enchantment),
-              item.name,
-              formatMoney(item.profit),
-              item.percentileProfit,
-              formatMoney(item.highestProfitBM_Price),
-              qualityToString(item.highestProfitBM_Quality),
-              item.highestProfitBM_Age,
-              item.BM_order_difference,
-              item.BM_order_difference_age > maxAgeCity * 10 ? "Very Old" : item.BM_order_difference_age,
-              formatMoney(item.cityPrice),
-              qualityToString(item.quality),
-              item.city_age,
-              item.city,
-              item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
-              item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
-              item.caerleonProfit < 1 ? "-" : item.caerleonAge // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
-            );
-          }      
-        }
-      });
+      fetchData(server, "Prices", city, selected_items, quality, processAPIResponse);
     }
   }
+}
+
+function updateProgressBar(percentage) {
+  // Assuming you have a progress bar element with id "progressBar"
+  const progressBar = document.getElementById("progressBar");
+  progressBar.style.width = percentage + "%";
+  progressBar.setAttribute("aria-valuenow", percentage);
+  progressBar.textContent = Math.round(percentage) + "%";
+}
+
+function processAPIResponse() {
+  printToConsole("API data received!\n");
+  // Begin accessing JSON data here
+  var data = JSON.parse(this.response);
+
+  br();
+  var cities = splitDataByCity(data);
+  if (!calculateAge(cities))
+    return;
+  if (!calculateProfits(cities))
+    return;
+  if (!filterDataByParameters(cities))
+    return;
+
+  var item;
+  for (var i = 1; i < cities.length; i++) {
+    for (var j = 0; j < cities[i].length; j++) {
+      item = cities[i][j];
+      addItemProperties(item);
+
+      if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
+        item.BM_order_difference = formatMoney(item.BM_order_difference) + " (Outdated)";
+      } else if (item.BM_order_difference > 0) {
+        item.BM_order_difference = formatMoney(item.BM_order_difference);
+      } else {
+        item.BM_order_difference = "Outdated";
+      }
+      addToTable("table",
+        (item.tier + "." + item.enchantment),
+        item.name,
+        formatMoney(item.profit),
+        item.percentileProfit,
+        formatMoney(item.highestProfitBM_Price),
+        qualityToString(item.highestProfitBM_Quality),
+        item.highestProfitBM_Age,
+        item.BM_order_difference,
+        item.BM_order_difference_age > maxAgeCity * 10 ? "Very Old" : item.BM_order_difference_age,
+        formatMoney(item.cityPrice),
+        qualityToString(item.quality),
+        item.city_age,
+        item.city,
+        item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
+        item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
+        item.caerleonProfit < 1 ? "-" : item.caerleonAge // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
+      );
+    }      
+  }
+  completedAsyncCalls++;
+  updateProgressBar((completedAsyncCalls / totalAsyncCalls) * 100);
+    console.log(completedAsyncCalls + " out of " + totalAsyncCalls);
+    if (completedAsyncCalls === totalAsyncCalls) {
+      if ($('#table >tbody >tr').length == 0) {
+      showMessage("No flips found with the current settings. Try adjusting your search parameters (Item Tier, Enchantment, Cities, Minimum Porfit, Black Market and Cities Age) to improve results and discover new opportunities!");
+      }
+    }
 }
 
 function showMessage(message) {
@@ -154,26 +174,7 @@ function hideMessage() {
   var container = document.getElementById('messageContainer');
   container.style.display = 'none'; // Hide the message
 }
-/*
-function addProgress(progress) {
-  totalProgress += progress;
-  var overallProgress = (totalProgress / totalFetches);
-  document.getElementById("progress").style.width = Math.round(overallProgress * 100) + "%";
-  document.getElementById("progress").attributes[3] = Math.round(overallProgress * 100);
-  document.getElementById("progress-text").innerText = Math.round(overallProgress * 100) + " %";
-  if (Math.round(overallProgress * 100) / 100 == 1) //it can be a little bit over and under cause of calculation errors
-    document.getElementById("progress").attributes.class.value = "progress-bar"; //Turn off active
-  console.log(totalProgress);
-  console.log(overallProgress);
-}
-function resetProgress() {
-  totalProgress = 0;
-  document.getElementById("progress-text").innerText = "0 %";
-  document.getElementById("progress").style.width = "0%";
-  document.getElementById("progress").attributes[3] = 0;
-  document.getElementById("progress").attributes.class.value = "progress-bar progress-bar-striped active";
-}
-*/
+
 function formatMoney(amount, decimalCount = 0, decimal = ".", thousands = " ") {
   // it just works
   // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
@@ -310,7 +311,6 @@ function calculateProfits(cities) {
   }
   return true;
 }
-
 
 /*
   if the same buy order can be filled by Caerleon the user is warned through the Caerleon properties.
@@ -537,13 +537,10 @@ function filterDataByParameters(cities) {
   if (totalApprovedTrades == 0) {
     if (freshTrades == 0) {
       printToConsole("Data too old. Pick bigger max age or update the market via the Data Client.\n");
-      //showMessage("Data too old. Pick bigger max age or update the market via the Data Client.")
     } else if (profitableTrades == 0) {
       printToConsole("No profitable trades found. Try decreasing Min Profit.\n");
-      //showMessage("No profitable trades found. Try decreasing Min Profit.");
     } else if (profitableTrades != 0 && freshTrades != 0) {
       printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
-      //showMessage("No fresh and profitable items found. Adjust one of the parameters and try again.")
     }
   } else {
     printToConsole("Profitable and fresh items found!\n");
@@ -599,37 +596,19 @@ function fetchData(server, type, cities, selected_items, quality, callback) {
   printToConsole("Requesting " + server + " API for " + type + " with " + selected_items.length + " items" + " with quality " + quality + "\n");
   // Open a new connection, using the GET request on the URL endpoint
   request.open('GET', link, true)
-
-
   request.onload = callback;
-  /*
-  var old = 0;
-  var fresh = 0;
-  request.onprogress = function (e) {
-    console.log(e);
-    if (e.lengthComputable) {
-      old = fresh;
-      fresh = e.loaded / e.total;
-      addProgress(fresh - old); // add the progress that was made since last check
-    }
-  }
-*/
+
   // Send request
   request.send();
-
   printToConsole("Fetching data from API...\n");
 }
 
 // Add a row of data to the id table
 function addToTable(id, ...cells) {
-  //var table = document.getElementById(id).getElementsByTagName('tbody')[0];
-  //var row = table.insertRow(0);
   var colColors = ["", "", "", "", "#E5FFCD", "#E5FFCD", "#E5FFCD", "#E7EDEF", "#E7EDEF", "#CDFFF3", "#CDFFF3", "#CDFFF3", "#CDFFF3", "#FFDEF6", "#FFDEF6", "#FFDEF6", ""]
   var append = "<tr>";
   for (var i = 0; i < cells.length; i++) {
     append += '<td style="background-color:' + colColors[i] + '" copy-data="' + cells[i] + '" onClick="copyToClipboard()" data-value="' + replaceAll((cells[i] + ""), " ", "") + '">' + cells[i] + '</td>';
-    //var cell = row.insertCell(i);
-    //cell.innerHTML = cells[i];
   }
   if (id == "table") {
     append += `

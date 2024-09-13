@@ -160,6 +160,9 @@
                 <button onclick="getPrices()" class="btn btn-outline-primary">Find Flips!</button>
               </div>
             </header>
+            <div class="progress">
+              <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
             <div id="messageContainer" class="message-container">
               <p id="messageText">This is a centered message!</p>
             </div>
@@ -454,81 +457,5 @@
       });
     });
   </script>
-  <!--
-      <script>
-        // Function to be triggered after DOM update
-        function onDomUpdate() {
-            console.log('DOM has been updated!');
-            var table = document.getElementById('table');
-            console.log(table.rows.length);
-            if ( table.rows.length <= 1 ) {
-              showMessage("No profitable flips found!");
-            }
-            else {
-              hideMessage();
-            }
-        }
-
-        // Set up MutationObserver
-        const observer = new MutationObserver((mutationsList) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    onDomUpdate(); // Call function after DOM update
-                }
-            }
-        });
-
-        // Target node to observe
-        const targetNode = document.getElementById('table');
-
-        // Observer configuration
-        const config = { childList: true, subtree: true };
-
-        // Start observing
-        observer.observe(targetNode, config);
-  </script>
--->
-<script>
-  // Function to be triggered on initial load
-  function onInitialLoad() {
-      console.log('Initial DOM load complete!');
-  }
-
-  // Function to be triggered after subsequent DOM updates
-  function onDomUpdate(count) {
-      console.log('DOM has been updated! ' + count);
-      var table = document.getElementById('table');
-      //console.log(table.rows.length);
-      if ( count > 4 && table.rows.length <= 1 ) {
-        showMessage("No profitable flips found!");
-      }
-      else {
-        hideMessage();
-      }
-  }
-
-  // Handle initial DOM load
-  document.addEventListener('DOMContentLoaded', () => {
-    var count = 0;
-      onInitialLoad(); // Call function after initial load
-      
-      // Set up MutationObserver for subsequent updates
-      const observer = new MutationObserver((mutationsList) => { 
-          for (const mutation of mutationsList) {
-              if (mutation.type === 'childList') {
-                  count = count + 1;
-                  onDomUpdate(count); // Call function after DOM update
-              }
-          }
-      });
-
-      // Target node to observe
-      const targetNode = document.getElementById('table');
-      const config = { childList: true, subtree: true };
-      observer.observe(targetNode, config);
-  });
-</script>
-
-</body>
-
+ </body>
 </html>
