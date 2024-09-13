@@ -16,9 +16,7 @@ const NEGATIVE_VALUE_LARGE = -2147483647;
 const ONE_WEEK = 10080; // change this to maxAgeCity if you don't want Caerleon properties to ignore maxAgeCity
 var profitableTrades = 0;
 var freshTrades = 0;
-var totalApprovedTrades = 0;
-var currentUTCTime; 
-
+var totalApprovedTrades;
 
 //Takes the raw items string and converts it into array of an objects
 function getAllItems() {
@@ -51,6 +49,7 @@ function getTime(url) {
 
 // Main function (Called when "Get Prices" button is pressed)
 function getPrices() {
+  totalApprovedTrades = 0;
   clearTable('table');
   hideMessage();
   server = document.getElementById("server").value;
@@ -113,54 +112,52 @@ function processAPIResponse() {
 
   br();
   var cities = splitDataByCity(data);
-  if (!calculateAge(cities))
-    return;
-  if (!calculateProfits(cities))
-    return;
-  if (!filterDataByParameters(cities))
-    return;
+  if (calculateAge(cities)) {
+    if (calculateProfits(cities)) {
+      if (filterDataByParameters(cities)) {
+        var item;
+        for (var i = 1; i < cities.length; i++) {
+          for (var j = 0; j < cities[i].length; j++) {
+            item = cities[i][j];
+            addItemProperties(item);
 
-  var item;
-  for (var i = 1; i < cities.length; i++) {
-    for (var j = 0; j < cities[i].length; j++) {
-      item = cities[i][j];
-      addItemProperties(item);
-
-      if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
-        item.BM_order_difference = formatMoney(item.BM_order_difference) + " (Outdated)";
-      } else if (item.BM_order_difference > 0) {
-        item.BM_order_difference = formatMoney(item.BM_order_difference);
-      } else {
-        item.BM_order_difference = "Outdated";
+            if (item.BM_order_difference > 0 && item.BM_order_difference_age > maxAgeCity) {
+              item.BM_order_difference = formatMoney(item.BM_order_difference) + " (Outdated)";
+            } else if (item.BM_order_difference > 0) {
+              item.BM_order_difference = formatMoney(item.BM_order_difference);
+            } else {
+              item.BM_order_difference = "Outdated";
+            }
+            addToTable("table",
+              (item.tier + "." + item.enchantment),
+              item.name,
+              formatMoney(item.profit),
+              item.percentileProfit,
+              formatMoney(item.highestProfitBM_Price),
+              qualityToString(item.highestProfitBM_Quality),
+              item.highestProfitBM_Age,
+              item.BM_order_difference,
+              item.BM_order_difference_age > maxAgeCity * 10 ? "Very Old" : item.BM_order_difference_age,
+              formatMoney(item.cityPrice),
+              qualityToString(item.quality),
+              item.city_age,
+              item.city,
+              item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
+              item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
+              item.caerleonProfit < 1 ? "-" : item.caerleonAge // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
+            );
+          }      
+        }
       }
-      addToTable("table",
-        (item.tier + "." + item.enchantment),
-        item.name,
-        formatMoney(item.profit),
-        item.percentileProfit,
-        formatMoney(item.highestProfitBM_Price),
-        qualityToString(item.highestProfitBM_Quality),
-        item.highestProfitBM_Age,
-        item.BM_order_difference,
-        item.BM_order_difference_age > maxAgeCity * 10 ? "Very Old" : item.BM_order_difference_age,
-        formatMoney(item.cityPrice),
-        qualityToString(item.quality),
-        item.city_age,
-        item.city,
-        item.caerleonProfit < 1 ? "-" : profitableInCaerleon(item, maxAgeCity),
-        item.caerleonProfit < 1 ? "-" : qualityToString(item.caerleonQuality),
-        item.caerleonProfit < 1 ? "-" : item.caerleonAge // can either be unprofitable or too old, so better leave it as "-" because it doesn't matter
-      );
-    }      
+    }
   }
   completedAsyncCalls++;
   updateProgressBar((completedAsyncCalls / totalAsyncCalls) * 100);
-    console.log(completedAsyncCalls + " out of " + totalAsyncCalls);
-    if (completedAsyncCalls === totalAsyncCalls) {
-      if ($('#table >tbody >tr').length == 0) {
+  if (completedAsyncCalls === totalAsyncCalls) {
+    if ($('#table >tbody >tr').length == 0) {
       showMessage("No flips found with the current settings. Try adjusting your search parameters (Item Tier, Enchantment, Cities, Minimum Porfit, Black Market and Cities Age) to improve results and discover new opportunities!");
-      }
     }
+  }
 }
 
 function showMessage(message) {
@@ -543,9 +540,8 @@ function filterDataByParameters(cities) {
       printToConsole("No fresh and profitable items found. Adjust one of the parameters and try again.\n")
     }
   } else {
-    printToConsole("Profitable and fresh items found!\n");
+    printToConsole("Profitable and fresh items found\n");
   }
-
   return totalApprovedTrades;
 }
 
