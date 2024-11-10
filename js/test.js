@@ -91,10 +91,13 @@ async function main() {
           }
     });
     const topProfitableTradesWithNames = fillNames(items,topProfitableTrades)
+    /*
     topProfitableTradesWithNames.forEach((trade, item_id) => {
         console.log(`Buy ${trade.itemName} ${trade.itemTier} of quality ${trade.sellQuality} in ${trade.buyFromCity} for ${trade.sellOrder} to sell to quality ${trade.buyQuality} in ${trade.sellToCity} for ${trade.buyOrder} with profit of ${trade.profit}`);
-        populateTradesTable(trade);
+        populateTradesTable(trades);
     });
+    */
+    populateTradesTable(topProfitableTradesWithNames);
 }
 
 function populateTradesTable(trades) {
