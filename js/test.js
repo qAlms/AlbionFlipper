@@ -13,7 +13,7 @@ async function fetchData(url) {
 
 async function extractItems() {
     let items = [];
-    apiData = await fetchData('https://github.com/Vekeng/AlbionFlipper/raw/refs/heads/dev/js/json/items.json');  // Wait for fetchData to complete
+    apiData = await fetchData('https://vekeng.github.io/AlbionFlipper/js/json/items.json');  // Wait for fetchData to complete
     apiData.forEach(item => {
         let itemTier, itemName;
         const [, itemEnchantment] = item.UniqueName.includes('@') ? item.UniqueName.split('@') : [item.UniqueName, 0];
