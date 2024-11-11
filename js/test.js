@@ -15,7 +15,7 @@ async function extractItems() {
     let items = [];
     apiData = await fetchData('https://vekeng.github.io/AlbionFlipper/js/json/items.json');  // Wait for fetchData to complete
     apiData.forEach(item => {
-        let itemTier, itemName;
+        let itemTier, itemName, itemDescriptionEng;
         const [, itemEnchantment] = item.UniqueName.includes('@') ? item.UniqueName.split('@') : [item.UniqueName, 0];
         const itemID = item.UniqueName;
         const match = itemID.match(/^T(\d)/);
@@ -29,9 +29,11 @@ async function extractItems() {
         } else {
             itemName = "N/A"
         }
-        if (itemTier && itemTier >= 4) {
+        if (item.LocalizedDescriptions) {
+            itemDescriptionEng = item.LocalizedDescriptions['EN-US']; 
+        } else { itemDescriptionEng = 'non-trad'; }
+        if (itemTier && itemTier >= 4 && !itemDescriptionEng.includes("non-trad")) {
             items.push({ID: itemID, name: itemName, enchantment: itemEnchantment, tier: itemTier});
-            //console.log({ID: itemID, name: itemName, enchantment: itemEnchantment, tier: itemTier})
         }
     });
     return items;
@@ -58,29 +60,27 @@ async function getMarketData(region,cities,items) {
 }
 
 
-async function main() {
-    const cities = ['Martlock', 'Fort Sterling', 'Thetford', 'Lymhurst', 'Bridgewatch', 'Caerleon', 'Black Market'];
+async function main(server, tier, cities, marketAge, premium) {
+    console.log("Start");
+    console.log(server);
+    console.log(tier);
     const taxModifier = 0.96; // Non-prem 0.92
-    //const cities = ['Caerleon', 'Black Market'];
-    const server = 'europe';
-    const marketAge = 30;
+    console.log("Age: ", marketAge);
+    //const marketAge = 30;
     const items = await extractItems();
     const selectedItems = items
-        .filter(item => item.tier === 8)
+        .filter(item => tier.includes(item.tier))
         .map(item => item.ID);
-    const chunkSize = 300; 
+    const chunkSize = 250; 
     const itemChunks = splitArrayIntoChunks(selectedItems, chunkSize);
     const allItems = [];
     for (const chunk of itemChunks) {
         const data = await getMarketData(server,cities,chunk);
         if (data) {
-            //console.log("data: ", data.length);
             allItems.push(...data);  // Merge the fetched data
         }
     }
-    //console.log("AllData: ", allItems.length);
     const profitableTrades = findProfitableTradesBetweenCities(allItems, cities, taxModifier, marketAge);
-    console.log(profitableTrades.length);
     const topProfitableTrades  = new Map();
     profitableTrades.forEach(trade => {
         const itemId = trade.itemId; 
@@ -91,42 +91,130 @@ async function main() {
           }
     });
     const topProfitableTradesWithNames = fillNames(items,topProfitableTrades)
-    /*
-    topProfitableTradesWithNames.forEach((trade, item_id) => {
-        console.log(`Buy ${trade.itemName} ${trade.itemTier} of quality ${trade.sellQuality} in ${trade.buyFromCity} for ${trade.sellOrder} to sell to quality ${trade.buyQuality} in ${trade.sellToCity} for ${trade.buyOrder} with profit of ${trade.profit}`);
-        populateTradesTable(trades);
-    });
-    */
     populateTradesTable(topProfitableTradesWithNames);
 }
-
+/*
 function populateTradesTable(trades) {
-    const tableBody = document.getElementById('tradesTable').querySelector('tbody');
-
-    // Clear any existing rows
-    tableBody.innerHTML = '';
-
-    // Loop through each trade and create a new row
-    trades.forEach(trade => {
-        const row = document.createElement('tr');
-
-        // Create and insert cells based on the specified fields
-        row.innerHTML = `
-            <td>${trade.itemTier}</td>
-            <td>${trade.itemName}</td>
-            <td>${trade.profit}</td>
-            <td>${trade.sellOrder}</td>
-            <td>${trade.sellQuality}</td>
-            <td>${trade.buyFromCity}</td>
-            <td>${trade.buyOrder}</td>
-            <td>${trade.buyQuality}</td>
-            <td>${trade.sellToCity}</td>
-        `;
-
-        // Append the row to the table body
-        tableBody.appendChild(row);
+    console.log(Array.from(trades.values()));
+    $('#tradesTable').bootstrapTable('refreshOptions', {
+        
+        data: Array.from(trades.values()), // Pass the array of trades data
+        sortable: true
     });
 }
+*/
+function populateTradesTable(trades) {
+    $('#tradesTable').bootstrapTable('refreshOptions', {
+        data: Array.from(trades.values()), // Pass the array of trades data
+        sortable: true,
+        columns: [
+            { field: 'itemTier', sortable: true, visible: false },
+            { field: 'itemName', sortable: true, visible: false },
+            { field: 'profit', sortable: true, visible: false },
+            {
+                field: 'tradeRoute',
+                formatter: tradeRouteFormatter, // Format with the custom trade route blocks
+                //sorter: tradeRouteSorter,       // Sort with custom sorter
+                sortable: true,
+                visible: true
+            },
+            // Hidden columns
+            { field: 'sellOrder', visible: false },
+            { field: 'sellQuality', visible: false },
+            { field: 'sellAge', visible: false },
+            { field: 'buyOrder', visible: false },
+            { field: 'buyQuality', visible: false },
+            { field: 'buyAge', visible: false }
+        ]
+    });
+}
+/*
+function tradeRouteFormatter(value, row) {
+    return `
+        <div class="trade-route-container">
+            <div class="trade-block">
+                <strong>City:</strong> ${row.buyFromCity}<br>
+                <strong>Price:</strong> ${row.sellOrder}<br>
+                <strong>Quality:</strong> ${row.sellQuality}
+                <div class="age-text">Age: ${row.sellAge}</div>
+            </div>
+            <span class="arrow">→</span>
+            <div class="trade-block">
+                <strong>City:</strong> ${row.sellToCity}<br>
+                <strong>Price:</strong> ${row.buyOrder}<br>
+                <strong>Quality:</strong> ${row.buyQuality}
+                <div class="age-text">Age: ${row.buyAge}</div>
+            </div>
+        </div>
+    `;
+}
+*/
+
+function tradeRouteFormatter(value, row, index) {
+    return `
+        <div class="trade-route">
+            <!-- Header with Item Name and Item Tier -->
+            <div class="trade-route-header">
+                <div class="item-name">${row.itemName}</div>
+                <div class="item-tier">Tier: ${row.itemTier}</div>
+            </div>
+
+            <!-- Trade Route Content -->
+            <div class="trade-route-content">
+                <!-- Left Block -->
+                <div class="trade-route-block left-block">
+                    <div class="block-body">
+                        <div class="city-info">
+                            <strong>City:</strong> ${row.buyFromCity}
+                        </div>
+                        <div class="price-info">
+                            <strong>Price:</strong> ${row.sellOrder}
+                        </div>
+                        <div class="quality-info">
+                            <strong>Quality:</strong> ${row.sellQuality}
+                        </div>
+                        <div class="age-info">
+                            <small>Age: ${row.sellAge}</small>
+                        </div>
+                    </div>
+                    <div class="age-text">Age: ${row.sellAge}</div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="trade-route-arrow">
+                    &#8594;
+                </div>
+
+                <!-- Right Block -->
+                <div class="trade-route-block right-block">
+                    <div class="block-body">
+                        <div class="city-info">
+                            <strong>City:</strong> ${row.sellToCity}
+                        </div>
+                        <div class="price-info">
+                            <strong>Price:</strong> ${row.buyOrder}
+                        </div>
+                        <div class="quality-info">
+                            <strong>Quality:</strong> ${row.buyQuality}
+                        </div>
+                        <div class="age-info">
+                            <small>Age: ${row.buyAge}</small>
+                        </div>
+                    </div>
+                    <div class="age-text">Age: ${row.buyAge}</div>
+                </div>
+            </div>
+
+            <!-- Profit under the blocks -->
+            <div class="profit">
+                <strong>Profit:</strong> ${row.profit}
+            </div>
+        </div>
+    `;
+}
+
+
+
 
 function fillNames (items, trades) {
     const itemLookup = new Map();
@@ -144,7 +232,6 @@ function fillNames (items, trades) {
         if (itemData) {
             item.itemName = itemData.itemName;
             item.itemTier = `${itemData.itemTier}.${itemData.itemEnchantment}`;
-            //item.itemTier = `${tier}.${enchantment}`;
         }
     });
     return trades; 
@@ -163,11 +250,7 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
     const profitableTrades = [];
     const now = new Date();
 
-    // Define the 20-minute threshold in milliseconds
-    const threshold = marketAge * 60 * 1000;
-
-    // Group items by item_id for easier lookup
-    
+    // Group items by item_id for easier lookup  
     const itemsById = data.reduce((acc, item) => {
         if (!acc[item.item_id]) acc[item.item_id] = [];
         acc[item.item_id].push(item);
@@ -187,19 +270,22 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
 
             // Convert sell price date to Date object and check if it's within market age
             const sellDate = new Date(`${itemA.sell_price_min_date}Z`);
-            if ((now - sellDate) > threshold) continue;
+            const sellAge = parseInt((now - sellDate) / 60 / 1000);
+            if (sellAge > marketAge) continue;
 
             for (let j = 0; j < items.length; j++) {
                 if (i === j) continue; // Avoid comparing the same city with itself
 
                 const itemB = items[j];
+                if (itemB.city != "Black Market") continue;
 
                 // Skip if the item is not in one of the desired cities
                 if (!cities.includes(itemB.city)) continue;
 
                 // Convert buy price date to Date object and check if it's within market age
                 const buyDate = new Date(`${itemB.buy_price_max_date}Z`);
-                if (now - buyDate > threshold) continue;
+                const buyAge = parseInt((now - buyDate) / 60 / 1000); 
+                if (buyAge > marketAge) continue;
 
                 // Extract relevant values for comparison
                 const {
@@ -213,7 +299,6 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                     quality: qualityB
                 } = itemB;
                 const buyPriceB = parseInt(rawBuyPriceB * taxModifier);
-                //const buyPriceB = rawBuyPriceB;
                 // Check for profitable trade, ensuring quality constraints are met
                 if (buyPriceB > sellPriceA && sellPriceA > 0 && cityA != cityB && qualityA >= qualityB) {
                     profitableTrades.push({
@@ -224,8 +309,8 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                         buyOrder: buyPriceB,
                         sellQuality: qualityA,
                         buyQuality: qualityB,
-                        sellDate: sellDate,
-                        buyDate: buyDate,
+                        sellAge: sellAge,
+                        buyAge: buyAge,
                         profit: buyPriceB - sellPriceA,
                     });
                 }
@@ -236,4 +321,4 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
     return profitableTrades;
 }
 
-main()
+//main()

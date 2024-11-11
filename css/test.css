@@ -1,0 +1,68 @@
+/* Container for the entire trade route */
+.trade-route {
+    padding: 10px;
+}
+
+/* Header with Item Name and Tier */
+.trade-route-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.item-tier {
+    font-size: 0.9em;
+    color: gray;
+}
+
+/* Container for the blocks and arrow */
+.trade-route-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Block styling */
+.trade-route-block {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: left;
+    font-size: 0.9em;
+    line-height: 1.4;
+    width: 140px; /* Adjusted width for more compact view */
+    position: relative;
+}
+
+/* Make sure the left and right blocks take equal space */
+.left-block, .right-block {
+    flex: 1; /* Ensures both blocks take up equal space */
+}
+
+/* Styling for the age text to position it in the bottom right */
+.age-text {
+    font-size: 0.75em;
+    color: gray;
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+}
+
+/* Arrow styling */
+.trade-route-arrow {
+    font-size: 2em;
+    color: gray;
+    font-weight: bold;
+}
+
+/* Profit under the blocks */
+.profit {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
