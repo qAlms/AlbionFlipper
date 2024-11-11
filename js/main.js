@@ -256,15 +256,15 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
 
 function mapQuality(quality) {
     switch(quality) {
-        case 0: 
-            return "Normal";
         case 1: 
-            return "Good";
+            return "Normal";
         case 2: 
-            return "Outstanding";
+            return "Good";
         case 3: 
-            return "Excellent";
+            return "Outstanding";
         case 4: 
+            return "Excellent";
+        case 5: 
             return "Masterpiece"
         default: 
             return "Normal"
