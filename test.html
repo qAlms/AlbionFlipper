@@ -11,27 +11,6 @@
     </head>
 <body>
     
-    
-<!--
-<table class="table sortable"  id="tradesTable" data-toggle="table" data-sortable="true">
-    <thead>
-        <tr>
-            <th>Tier</th>
-            <th>Item</th>
-            <th data-sortable="true">Profit</th>
-            <th>Buy for</th>
-            <th>Buy Quality</th>
-            <th>Buy at</th>
-            <th>Sell for</th>
-            <th>Sell Quality</th>
-            <th>Sell at</th>
-        </tr>
-    </thead>
-    <tbody id="tradeTableBody">
-
-    </tbody>
-</table>
--->
 <div class="toolbar p-3">
     <div class="d-flex align-items-center gap-2 button-container">
         <!-- Server Dropdown -->
@@ -79,7 +58,7 @@
 
         <!-- Market Age Input -->
         <input type="number" class="form-control fixed-width" id="marketAge" placeholder="Market Age (default 20)" aria-label="Market Age">
-
+        <div class="form-check"><input class="form-check-input" type="checkbox" value="true" id="premium" /> <label class="form-check-label" for="premium">Premium?</label></div>
         <!-- Find Flips Button -->
         <button type="button" onclick="" class="btn btn-primary fixed-width">Find Flips!</button>
     </div>
@@ -88,19 +67,9 @@
 <table class="table sortable" id="tradesTable" data-toolbar=".toolbar" data-toggle="table" data-sortable="true">
     <thead>
         <tr>
-            <th data-field="itemTier" data-sortable="true">Tier</th>
-            <th data-field="itemName" data-sortable="true">Item</th>
+            <th data-field="item" data-sortable="true">Item</th>
             <th data-field="profit" data-sortable="true">Profit</th>
-            <!--<th data-field="tradeRoute" data-formatter="tradeRouteFormatter" data-sortable="false">Trade Route</th>-->
-            <th data-field="tradeRoute" data-formatter="tradeRouteFormatter" data-sortable="false">Trade Route</th>
-            <th data-visible="false" data-field="buyFromCity" data-sortable="true">Buy at</th>
-            <th data-visible="false" data-field="sellToCity" data-sortable="true">Sell at</th>
-            <th data-visible="false" data-field="sellOrder" data-sortable="true">Buy for</th>
-            <th data-visible="false" data-field="sellQuality" data-sortable="true">Buy Quality</th>
-            <th data-visible="false" data-field="sellAge" data-sortable="true">Buy Order Age</th>
-            <th data-visible="false" data-field="buyOrder" data-sortable="true">Sell for</th>
-            <th data-visible="false" data-field="buyQuality" data-sortable="true">Sell Quality</th>
-            <th data-visible="false" data-field="buyAge" data-sortable="true">Sell Order Age</th>
+            <th data-visible="true" data-field="tradeRoute" data-sortable="true">Flip!</th>
         </tr>
     </thead>
 </table>
@@ -141,14 +110,6 @@
     });
 </script>
 <script>
-$(document).ready(function () {
-    // Attach event listener to cycle the sort type when clicking the tradeRoute header
-    $('#tradesTable').on('click', 'th[data-field="tradeRoute"]', function () {
-        toggleTradeRouteSortType();
-    });
-});
-</script>
-<script>
     document.querySelector('.btn-primary').addEventListener('click', function(event) {
     event.preventDefault();  // Prevent automatic trigger
     processData();
@@ -159,19 +120,16 @@ $(document).ready(function () {
     function processData() {
         var server = document.getElementById('serverSelect').innerText.toLowerCase();
         var marketAge = parseInt(document.getElementById('marketAge').value);
-        console.log(marketAge);
         var selectedTiers = [];
         var selectedCities = [];
+        var premium = document.getElementById('premium').checked;
         document.querySelectorAll('#tierSelect .form-check-input:checked').forEach(function(checkbox) {
             selectedTiers.push(parseInt(checkbox.value));  // Collect checked checkbox values
         });
         document.querySelectorAll('#citySelect .form-check-input:checked').forEach(function(checkbox) {
             selectedCities.push(checkbox.value);  // Collect checked checkbox values
-            console.log(selectedCities);
         });
-        console.log(selectedTiers);
-        console.log(selectedCities)
-        main(server,selectedTiers,selectedCities,marketAge);
+        main(server,selectedTiers,selectedCities,marketAge, premium);
     }
 </script>
 </body>

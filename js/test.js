@@ -61,12 +61,10 @@ async function getMarketData(region,cities,items) {
 
 
 async function main(server, tier, cities, marketAge, premium) {
-    console.log("Start");
-    console.log(server);
-    console.log(tier);
-    const taxModifier = 0.96; // Non-prem 0.92
-    console.log("Age: ", marketAge);
-    //const marketAge = 30;
+    let taxModifier; 
+    if (!premium) {
+        taxModifier = 0.92;
+    } else { taxModifier = 0.96;  }
     const items = await extractItems();
     const selectedItems = items
         .filter(item => tier.includes(item.tier))
@@ -107,28 +105,25 @@ function populateTradesTable(trades) {
     $('#tradesTable').bootstrapTable('refreshOptions', {
         data: Array.from(trades.values()), // Pass the array of trades data
         sortable: true,
+        sortOrder: 'desc', // Default sort order is descending
+        sortName: 'profit', // Default column to sort by
         columns: [
-            { field: 'itemTier', sortable: true, visible: false },
-            { field: 'itemName', sortable: true, visible: false },
-            { field: 'profit', sortable: true, visible: false },
-            {
-                field: 'tradeRoute',
-                formatter: tradeRouteFormatter, // Format with the custom trade route blocks
-                //sorter: tradeRouteSorter,       // Sort with custom sorter
-                sortable: true,
-                visible: true
-            },
-            // Hidden columns
-            { field: 'sellOrder', visible: false },
-            { field: 'sellQuality', visible: false },
-            { field: 'sellAge', visible: false },
-            { field: 'buyOrder', visible: false },
-            { field: 'buyQuality', visible: false },
-            { field: 'buyAge', visible: false }
+            { field: 'item', visible: true, formatter: formatItems},
+            //{ field: 'itemTier', sortable: true, visible: true },
+            //{ field: 'itemName', sortable: true, visible: true },
+            { field: 'profit', sortable: true, visible: true },
+            { field: 'tradeRoute', sortable: true, visible: true, formatter: tradeRouteFormatter },
         ]
     });
 }
-/*
+function formatItems(value, row) { 
+    return `
+    <img src="https://render.albiononline.com/v1/item/${row.itemId}.png" alt="Item Image" width="50" height="50">
+    ${row.itemName}
+    ${row.itemTier}
+    `;
+}
+
 function tradeRouteFormatter(value, row) {
     return `
         <div class="trade-route-container">
@@ -148,73 +143,6 @@ function tradeRouteFormatter(value, row) {
         </div>
     `;
 }
-*/
-
-function tradeRouteFormatter(value, row, index) {
-    return `
-        <div class="trade-route">
-            <!-- Header with Item Name and Item Tier -->
-            <div class="trade-route-header">
-                <div class="item-name">${row.itemName}</div>
-                <div class="item-tier">Tier: ${row.itemTier}</div>
-            </div>
-
-            <!-- Trade Route Content -->
-            <div class="trade-route-content">
-                <!-- Left Block -->
-                <div class="trade-route-block left-block">
-                    <div class="block-body">
-                        <div class="city-info">
-                            <strong>City:</strong> ${row.buyFromCity}
-                        </div>
-                        <div class="price-info">
-                            <strong>Price:</strong> ${row.sellOrder}
-                        </div>
-                        <div class="quality-info">
-                            <strong>Quality:</strong> ${row.sellQuality}
-                        </div>
-                        <div class="age-info">
-                            <small>Age: ${row.sellAge}</small>
-                        </div>
-                    </div>
-                    <div class="age-text">Age: ${row.sellAge}</div>
-                </div>
-
-                <!-- Arrow -->
-                <div class="trade-route-arrow">
-                    &#8594;
-                </div>
-
-                <!-- Right Block -->
-                <div class="trade-route-block right-block">
-                    <div class="block-body">
-                        <div class="city-info">
-                            <strong>City:</strong> ${row.sellToCity}
-                        </div>
-                        <div class="price-info">
-                            <strong>Price:</strong> ${row.buyOrder}
-                        </div>
-                        <div class="quality-info">
-                            <strong>Quality:</strong> ${row.buyQuality}
-                        </div>
-                        <div class="age-info">
-                            <small>Age: ${row.buyAge}</small>
-                        </div>
-                    </div>
-                    <div class="age-text">Age: ${row.buyAge}</div>
-                </div>
-            </div>
-
-            <!-- Profit under the blocks -->
-            <div class="profit">
-                <strong>Profit:</strong> ${row.profit}
-            </div>
-        </div>
-    `;
-}
-
-
-
 
 function fillNames (items, trades) {
     const itemLookup = new Map();
@@ -307,8 +235,8 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                         itemId: item_id,
                         sellOrder: sellPriceA,
                         buyOrder: buyPriceB,
-                        sellQuality: qualityA,
-                        buyQuality: qualityB,
+                        sellQuality: mapQuality(qualityA),
+                        buyQuality: mapQuality(qualityB),
                         sellAge: sellAge,
                         buyAge: buyAge,
                         profit: buyPriceB - sellPriceA,
@@ -321,4 +249,20 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
     return profitableTrades;
 }
 
+function mapQuality(quality) {
+    switch(quality) {
+        case 0: 
+            return "Normal";
+        case 1: 
+            return "Good";
+        case 2: 
+            return "Outstanding";
+        case 3: 
+            return "Excellent";
+        case 4: 
+            return "Masterpiece"
+        default: 
+            return "Normal"
+    };
+}
 //main()

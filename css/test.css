@@ -1,68 +1,38 @@
-/* Container for the entire trade route */
-.trade-route {
-    padding: 10px;
-}
-
-/* Header with Item Name and Tier */
-.trade-route-header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.item-name {
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-.item-tier {
-    font-size: 0.9em;
-    color: gray;
-}
-
-/* Container for the blocks and arrow */
-.trade-route-content {
+/* Style for the trade-route container */
+.trade-route-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-}
-
-/* Block styling */
-.trade-route-block {
+    justify-content: space-between;
     padding: 10px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    text-align: left;
-    font-size: 0.9em;
-    line-height: 1.4;
-    width: 140px; /* Adjusted width for more compact view */
-    position: relative;
 }
 
-/* Make sure the left and right blocks take equal space */
-.left-block, .right-block {
-    flex: 1; /* Ensures both blocks take up equal space */
+/* Style for each trade block */
+.trade-block {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 0 5px;
+    width: 45%;  /* Adjust width to fit both blocks in a row */
+    position: relative; /* Needed for positioning the age text */
 }
 
-/* Styling for the age text to position it in the bottom right */
+/* Style for the arrow between blocks */
+.arrow {
+    font-size: 24px;
+    padding: 0 10px;
+}
+
+/* Style for the age text */
 .age-text {
-    font-size: 0.75em;
-    color: gray;
     position: absolute;
-    bottom: 4px;
-    right: 6px;
+    bottom: 5px;
+    right: 5px;
+    font-size: 12px;   /* Make the text smaller */
+    color: gray;       /* Make the text gray */
 }
 
-/* Arrow styling */
-.trade-route-arrow {
-    font-size: 2em;
-    color: gray;
-    font-weight: bold;
-}
-
-/* Profit under the blocks */
-.profit {
-    margin-top: 10px;
-    text-align: center;
-    font-weight: bold;
+.fixed-width {
+    width: 150px; /* Set your desired fixed width */
+    white-space: nowrap;   /* Prevent text from wrapping */
+    overflow: hidden;      /* Hide the overflow text */
+    text-overflow: ellipsis; /* Add ellipsis when text overflows */
 }
