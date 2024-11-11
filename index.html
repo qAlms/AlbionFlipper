@@ -1,458 +1,230 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="AlbionFlipper is a powerful flipping tool for Albion Online. Maximize your profit by flipping items in the market with ease.">
-    <meta name="google-site-verification" content="SvlfS0ZFGcku2EflM4GtZZ7uF4jiURXSY7XTqaQ12NE" />
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="018fa0c7-6ab7-4c70-8547-8ab30f914456"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <title>AlbionFlipper - The Ultimate Black Market Flipping Tool for Albion Online</title>
-  </head>
-  <body>
-    <header>
-      <ul class="nav nav-tabs flex-column flex-sm-row border-sm-0-reverse">
-        <li class="nav-item">
-          <a class="nav-link disabled" href="" tabindex="-1" aria-disabled="true" translate="no">Flipper <i
-            class="far fa-heart text-danger"></i><span class="disabled float-right d-sm-none">Made with <i
-            class="fas fa-brain text-info">
-          </i></span></a>
-        </li>
-        <div class="dropdown-divider d-sm-none d-block"></div>
-        <li class="nav-item">
-          <a class="nav-link border-sm-0-reverse active" data-toggle="tab" href="#results" role="tab">Flip it!</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link border-sm-0-reverse" data-toggle="tab" href="#debug" role="tab">Console</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link border-sm-0-reverse" data-toggle="tab" href="#tutorial" role="tab">Tutorial</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link border-sm-0-reverse" data-toggle="tab" href="#cart_tab" role="tab">Cart</a>
-        </li>
-        <li class="nav-link">
-          <a class="border-sm-0-reverse" href="https://discord.gg/tyaArtpytv" target="_blank">
-          <i class="fab fa-discord"> </i> Discord
-          </a>
-        </li>
-        <li class="nav-link">
-          <a class="border-sm-0-reverse"  href="https://github.com/Vekeng/AlbionFlipper" target="_blank">
-          <i class="fab fa-github-alt"></i> Github
-          </a>
-        </li>
-        <li class="nav-item ml-auto d-none d-sm-block">
-          <a class="nav-link disabled h6" data-toggle="tab" href="" role="tab">
-          Made with <i class="fas fa-brain text-info"> </i>
-          </a>
-        </li>
-        <div class="dropdown-divider d-sm-none d-block"></div>
-      </ul>
-    </header>
-    <main>
-      <div class="tab-content">
-        <!-- Table of results container -->
-        <div class="tab-pane pt-2 fade show active" id="results" role="tabpanel">
-          <div class="container-fluid">
-            <div class="row align-items-center mr-auto ml-auto">
-              <div class="form-group mb-0 ">
-                <label for="server" class="sr-only">Server</label>
-                <select id="server" class="form-control-sm">
-                  <option value="europe">Europe</option>
-                  <option value="asia">Asia</option>
-                  <option value="americas">Americas</option>
-                </select>
-              </div>
-              <div class="form-group mb-0">
-                <label for="tier" class="sr-only">Tier</label>
-                <select id="tier" class="form-control-sm">
-                  <option value="-1">All</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8" selected>8</option>
-                </select>
-              </div>
-              <div class="form-group mb-0">
-                <label for="enchantment" class="sr-only">Enchantment</label>
-                <select id="enchantment" class="form-control-sm">
-                  <option value="-1" selected>All</option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-              </div>
-              <div class="form-group mb-0">
-                <label for="quality" class="sr-only">Quality</label>
-                <select id="quality" class="form-control-sm" disabled>
-                  <option value="0" selected>All</option>
-                  <option value="1">Normal</option>
-                  <option value="2">Good</option>
-                  <option value="3">Outstanding</option>
-                  <option value="4">Excellent</option>
-                  <option value="5">Masterpiece</option>
-                </select>
-              </div>
-              <fieldset id="cities" class="form-group mb-0 d-flex flex-wrap">
-                <legend class="sr-only">Cities</legend>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="Fort Sterling" id="FS" checked>
-                  <label class="form-check-label" for="FS">Fort Sterling</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="Thetford" id="TF" checked>
-                  <label class="form-check-label" for="TF">Thetford</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="Lymhurst" id="LH" checked>
-                  <label class="form-check-label" for="LH">Lymhurst</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="Bridgewatch" id="BW" checked>
-                  <label class="form-check-label" for="BW">Bridgewatch</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="Martlock" id="ML" checked>
-                  <label class="form-check-label" for="ML">Martlock</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" value="Caerleon" id="CL" checked disabled>
-                  <label class="form-check-label" for="CL">Caerleon</label>
-                </div>
-              </fieldset>
-              <div class="form-group mb-0">
-                <label for="minProfitRange">Minimum Profit</label>
-                <input type="number" class="form-control form-control-sm" id="minProfit" value="1">
-              </div>
-              <div class="form-group mb-0">
-                <label for="maxAgeBMRange">Max. Black Market Age</label>
-                <input type="number" class="form-control form-control-sm" id="maxAgeBM" value="20">
-              </div>
-              <div class="form-group mb-0">
-                <label for="maxAgeCityRange">Max. City Age</label>
-                <input type="number" class="form-control form-control-sm" id="maxAgeCity" value="20">
-              </div>
-              <div class="form-check mb-0">
-                <input class="form-check-input" type="checkbox" id="premium" checked>
-                <label class="form-check-label" for="premium">Premium Account</label>
-              </div>
-              <div class="text-center">
-                <button onclick="getPrices()" class="btn btn-outline-primary">Find Flips!</button>
-              </div>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Hello, Bootstrap Table!</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css">
+    </head>
+<body>
+    <div class="toolbar p-3">
+        <div class="d-flex align-items-center gap-2 button-container">
+            <!-- Server Dropdown -->
+            <div class="dropdown" id="serverSelect">
+                <button class="btn btn-light dropdown-toggle fixed-width" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Server
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="serverSelect">
+                    <li><a class="dropdown-item" href="#" data-value="Europe">Europe</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="Asia">Asia</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="Americas">Americas</a></li>
+                </ul>
             </div>
-            <div class="">
-              <div class="progress">
-                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-              </div>
+    
+            <!-- Tiers Dropdown -->
+            <div class="dropdown" id="tierSelect">
+                <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="tierDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                    Tiers
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="tierDropdownButton">
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="4" id="tier4" /> <label class="form-check-label" for="tier4">4</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="5" id="tier5" /> <label class="form-check-label" for="tier5">5</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="6" id="tier6" /> <label class="form-check-label" for="tier6">6</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="7" id="tier7" /> <label class="form-check-label" for="tier7">7</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="8" id="tier8" checked/> <label class="form-check-label" for="tier8">8</label></div></a></li>
+                </ul>
             </div>
-            <div id="messageContainer" class="message-container">
-              <p id="messageText">This is a centered message!</p>
+    
+            <!-- Cities Dropdown -->
+            <div class="dropdown" id="citySelect">
+                <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="cityDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                    Cities
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="cityDropdownButton">
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Martlock" id="martlock" /> <label class="form-check-label" for="martlock">Martlock</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Fort Sterling" id="fortsterling" /> <label class="form-check-label" for="fortsterling">Fort Sterling</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Thetford" id="thetford" /> <label class="form-check-label" for="thetford">Thetford</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Lymhurst" id="lymhurst" /> <label class="form-check-label" for="lymhurst">Lymhurst</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Bridgewatch" id="bridgewatch" /> <label class="form-check-label" for="bridgewatch">Bridgewatch</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Caerleon" id="caerleon"/> <label class="form-check-label" for="caerleon">Caerleon</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Brecilien" id="brecilien" /> <label class="form-check-label" for="brecilien">Brecilien</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Black Market" id="blackmarket"/> <label class="form-check-label" for="blackmarket">Black Market</label></div></a></li>
+                </ul>
             </div>
-            <div class="ml-auto mr-auto">
-              <table id="table" class="table table-sm sortable" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th data-defaultsort='disabled' data-toggle="tooltip" data-placement="top"
-                      title="Tier and enchantment of the item in the format: TIER.ENCHANTMENT">Tier
-                    </th>
-                    <th data-defaultsort='disabled' data-toggle="tooltip" data-placement="top" title="Name of the item to flip">Name</th>
-                    <th data-defaultsort="desc" data-toggle="tooltip" data-placement="top" title="Profit of the trade with tax included">Profit
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Profit in percent calculated as (profit/city price)*100">%
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="The price of the buy order in the Black Market">
-                      BM Price
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The quality of the buy order in the Black Market">
-                      BM Quality
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the buy order in the Black Market was updated by the Albion Data Client. Will always be less or equal to Max BM Age. If the age is large it can mean that the order has already been filled">
-                      BM Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The difference between buy and sell order (in silver) in the Black Market. If it is small there is a risk that the buy order will be filled by the sell order before you can flip the item, especially if flipping between BM and other cities">
-                      BM Order Diff.
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the sell order in the Black Market was updated by the Albion Data Client">
-                      BM Order Diff. Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="Price of the item in the city">City Sell Price
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Quality of the item in the city. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">
-                      City Quality
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the sell order in the city was updated by the Albion Data Client. Will always be less or equal to Max City Age. If the age is large it can mean that the order has already been filled">
-                      City Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="The city where the item can be bought">City</th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="If the Black Market buy order can be filled by an item in the Caerleon market. If you are flipping between BM and another city this serves as a warning since the same buy order can be filled much quicker by a Caerleon flipper">
-                      Caerleon Profit
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Quality of the item in Caerleon. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">
-                      Caerleon Quality
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the sell order in Caerleon was updated by the Albion Data Client. Displays items up to one week old as Caerleon prices do not fluctuate much">
-                      Caerleon Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="Add the flip to the shopping cart">Cart</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
-              <button onclick="clearTable('table')" type="button" class="btn btn-danger btn-sm float-right">
-              <i class="far fa-trash-alt"></i> Clear
-              </button>
+    
+            <!-- Market Age Input -->
+            <input type="number" class="form-control" id="marketAge" style="width: 150px;" placeholder="Age" aria-label="Market Age">
+    
+            <!-- Premium Checkbox -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="premium" checked/>
+                <label class="form-check-label" for="premium">Premium?</label>
             </div>
-          </div>
+    
+            <!-- Find Flips Button -->
+            <button type="button" onclick="" class="btn btn-primary">Find Flips!</button>
         </div>
-        <!-- Console container -->
-        <div class="tab-pane fade" id="debug" role="tabpanel">
-          <div class="container-fluid">
-            <div class="row mt-1">
-              <div class="col-md-5 col-sm-6">
-                <h3 class="pt-2">Logs</h3>
-                <textarea id="console" class="w-100 text-monospace" rows="20" cols="50" disabled
-                  style="height: 534px;box-sizing:border-box;resize: none;overflow-y: scroll;"></textarea>
-                <a onclick="clearConsole()" href="#" class="btn btn-outline-danger w-100 mt-1"><i
-                  class="fas fa-eraser"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="container-fluid bg-light text-light py-3">
-          </div>
+    
+        <div class="progress" style="height: 20px; width: 100%; margin-top: 10px;">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <!-- Tutorial container -->
-        <div class="tab-pane fade" id="tutorial" role="tabpanel">
-          <div class="container-fluid col-sm-7">
-            <h3 class="pt-2">Tutorial</h3>
-            <p>For the best possible results, it is strongly suggested to use the Albion Data Client together with this
-              tool. The API has no way of telling when an item has been sold, so it is therefore best to assume that if
-              either the <strong>BM Age</strong> or <strong>City Age</strong> are high, the buy order has already been
-              filled.
-            </p>
-            <p>As the best results are achieved by using the Albion Data Client, this tutorial will explain how to
-              use Flipper in conjunction with the Albion Data Client. Start by downloading the data client from: <a
-                href="http://www.albion-online-data.com" target="_blank">www.albion-online-data.com</a>
-            </p>
-            <ol>
-              <li>Make sure the Albion Data Client is running in the background:
-                <img class="w-100" src="images\1.png" alt="">
-              </li>
-              <li>Login to Albion Online and update the location of your character by switching locations (e.g. go out of
-                the bank and then back into the bank). Example of how the Data Client should respond:
-                <img class="w-100" src="images\2.png" alt="" />
-              </li>
-              <li>Go to whatever market you want to flip from and select the <strong>Category</strong>,
-                <strong>Tier</strong>, <strong>Enchantment</strong> and <strong>Quality</strong> of the items you want to
-                flip. An efficient way of updating many items is to, for example, choose <strong>Tier 8</strong> and
-                category: <strong>Accessories.</strong>
-                <img class="w-100" src="images\3.png" alt="" />
-              </li>
-              <li>Keep pressing the next page arrow (marked with a red box in the image below) until you either hit page
-                20 or there are no more pages with items left. In the image below we hit the maximum page 20 meaning that
-                there are still more items we can update.
-                <img class="w-100" src="images\4.png" alt="" />
-              </li>
-              <li>Click the <strong>Price</strong> column (marked with a red box in the image below) to sort the items in
-                the opposite order (if previously they were sorted in ascending order, now they will be sorted in
-                descending order). In our example the items are now in descending order (by price), meaning that they get
-                cheaper as we go.
-                <img class="w-100" src="images\5.png" alt="" />
-              </li>
-              <li>Repeat <strong>Step 4</strong>. Here you can stop once you reach the same prices as on the last page 20
-                in <strong>Step 4</strong>. In the image below we can see that the prices on page 10 are descending from
-                1&nbsp;289&nbsp;999. This means that the range of prices we updated is 79&nbsp;995 &ndash;
-                1&nbsp;332&nbsp;999 (price of the first and last item in <strong>Step 3</strong> and <strong>4</strong>
-                respectively) and 30&nbsp;000&nbsp;000 &ndash; 1&nbsp;279 998 (price of the first and last item in
-                <strong>Step 5</strong> and <strong>6</strong> respectively). In other words, we have updated all the
-                <strong>Tier 8 Accessories</strong> in the <strong>Fort Sterling</strong> market. Now repeat <strong>steps
-                3 &ndash; 6</strong> for <strong>Armor</strong>, <strong>Magic</strong>, <strong>Melee</strong>,
-                <strong>Off-Hand</strong>, <strong>Ranged</strong> and <strong>Tool</strong> categories.
-                <img class="w-100" src="images\6.png" alt="" />
-                While you are updating the items make sure the Albion Data Client is sending the updates (see the image
-                below for how it looks when the items are being updated). If you are getting errors, try updating your
-                location (leave and enter the market for example).
-                <img class="w-100" src="images\6_2.png" alt="" />
-              </li>
-              <li>Fast travel to the <strong>Black Market</strong> and update the same items as you did in the previous
-                market (repeat <strong>steps 3 &ndash; 6</strong>). <strong>Hint: have one of your characters be in the
-                Black Market so you can quickly switch characters and update the Black Market without fast
-                travel!</strong>
-                <br /><br />
-              </li>
-              <li>Choose the appropriate parameters in Flipper and click the &ldquo;Find Flips!&rdquo; button. Make sure
-                the <strong>Max BM Age</strong> and <strong>Max City Age</strong> are as low as possible. The API has no
-                way of knowing when an item has been sold, so if you choose a too large age there is a chance the buy
-                order has already been filled. In our example we choose the following parameters:
-                <img class="w-100" src="images\8.png" alt="" />
-              </li>
-              <li>Sort the table by profits by clicking the <strong>Profit (with tax)</strong> column title (marked with
-                red box) and execute the top trades. If there are a lot of different entries feel free to add the ones you
-                want to execute into the cart by pressing the plus button in the cart column (marked with red box).
-                <strong>Hint: you can click on any cell in the table to copy its content. You can then, for example, paste
-                the name of the item in the market search to find it and buy it faster!</strong>
-                <img class="w-100" src="images\9.png" alt="" />
-                <img class="w-100" src="images\9_2.png" alt="" />
-              </li>
-            </ol>
-            <p><strong>Some Last Words and Tips</strong></p>
-            <p>This is merely a suggestion on how to get started with Flipper. Updating items in this manner will usually
-              not work for lower tiers that have a lot more items for sale than tier 8. In that case you will for example
-              have to update each quality or enchantment one by one. If you know which items are usually profitable then
-              you can only update these. 
-            </p>
-            <p>If you wish to only flip items between the Caerleon market and the Black Market, then you can uncheck all
-              the other cities. Caerleon is always checked as the program uses the Caerleon item data to warn users
-              flipping from other cities if the same buy order can be filled by the Caerleon market. This causes Caerleon
-              trades to also appear in the table, so sort first by profit and then by city if you only want to flip from
-              another city and ignore Caerleon. 
-            </p>
-            <p>The reason why quality is set to all and cannot be changed is because the program compares the different
-              combinations of trades and qualities that can be made and displays the trades that would give the highest
-              net profit if all the trades for the same item were executed. 
-            </p>
-            <p>The key in market flipping is speed. The item data that you are sending is public and other people using
-              Flipper will also see the same trades as you. You need to therefore be fast in updating the items and then
-              executing the trades. If you don’t make a trade in time you can usually recover most of the money by putting
-              it up for sale on one of the markets or on the Black Market, albeit it will take time to sell.
-            </p>
-            <p>On that note, we wish you good luck and happy flipping!</p>
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cz4VEmaDG7k"></iframe>
-            </div>
-          </div>
-        </div>
-        <!-- Cart container -->
-        <div class="tab-pane fade pt-2" id="cart_tab" role="tabpanel">
-          <div class="container-fluid">
-            <div class="table-responsive">
-              <table id="cart" class="table table-sm sortable" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Tier and enchantment of the item in the format: TIER.ENCHANTMENT">Tier
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="Name of the item to flip">Name</th>
-                    <th data-toggle="tooltip" data-placement="top" title="Profit of the trade with tax included">Profit
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Profit in percent calculated as (profit/city price)*100">%
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="The price of the buy order in the Black Market">
-                      BM Price
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The quality of the buy order in the Black Market">
-                      BM Quality
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the buy order in the Black Market was updated by the Albion Data Client. Will always be less or equal to Max BM Age. If the age is large it can mean that the order has already been filled">
-                      BM Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The difference between buy and sell order in the Black Market. If it is small there is a risk that the buy order will be filled by the sell order before you can flip the item, especially if flipping between BM and other cities">
-                      BM Order Diff.
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the sell order in the Black Market was updated by the Albion Data Client">
-                      BM Order Diff. Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="Price of the item in the city">City Sell Price
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Quality of the item in the city. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">
-                      City Quality
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the sell order in the city was updated by the Albion Data Client. Will always be less or equal to Max City Age. If the age is large it can mean that the order has already been filled">
-                      City Age
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top" title="The city where the item can be bought">City</th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="If the Black Market buy order can be filled by an item in the Caerleon market. If you are flipping between BM and another city this serves as a warning since the same buy order can be filled much quicker by a Caerleon flipper">
-                      Caerleon Profit
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="Quality of the item in Caerleon. Can be higher than the BM Quality since you can sell higher quality items to lower quality buy orders">
-                      Caerleon Quality
-                    </th>
-                    <th data-toggle="tooltip" data-placement="top"
-                      title="The time (in minutes) since the sell order in Caerleon was updated by the Albion Data Client. Displays items up to one week old as Caerleon prices do not fluctuate much">
-                      Caerleon Age
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Total</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <button onclick="clearTable('cart')" type="button" class="btn btn-danger btn-sm float-right">
-            <i class="far fa-trash-alt"></i> Clear
-            </button>
-          </div>
-        </div>
-      </div>
-      </div>
-    </main>
-    <script type="text/javascript" src="js/items.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script src="https://kit.fontawesome.com/9298b1d4d7.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-      integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/bootstrap/bootstrap-sortable.js"></script>
-    <script type="text/javascript" src="js/moment.js"></script>
-    <script>
-      $(document).ready(function () {
-        $("[type=number]").change(function () {
-          var newv = $(this).val();
-          $(this).prev().val(newv);
+    </div>
+    
+    
+    
+        <!-- Full-width Progress Bar -->
+        
+    
+        <!-- Table -->
+        <table class="table sortable table-responsive table-sm" id="tradesTable" data-toggle="table" data-sortable="true">
+            <thead>
+                <tr>
+                    <th data-field="item" data-sortable="false" class="w-15">Item</th>
+                    <th data-field="profit" data-sortable="true" class="w-15">Profit</th>
+                    <th data-visible="true" data-field="tradeRoute" data-sortable="false">Flip!</th>
+                </tr>
+            </thead>
+        </table>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.js"></script>
+<script src="js/main.js" defer></script>
+
+<script>
+    $(document).ready(function() {
+        // Restore server selection from localStorage
+        var storedServer = localStorage.getItem('selectedServer');
+        if (storedServer) {
+            $('#serverSelect .dropdown-toggle').text(storedServer); // Update server button text within the div
+        } else {
+            $('#serverSelect .dropdown-toggle').text('Server'); // Default label if no server selection is stored
+        }
+
+        // Event listener for server dropdown item clicks
+        $('#serverSelect .dropdown-menu .dropdown-item').on('click', function() {
+            var selectedText = $(this).data('value');
+            $('#serverSelect .dropdown-toggle').text(selectedText); // Update the server button text
+            localStorage.setItem('selectedServer', selectedText); // Persist the selected server
         });
-      });
-      
-      $(document).ready(function () {
-        $("[type=range]").change(function () {
-          var newv = $(this).val();
-          $(this).next().val(newv);
+
+        // Restore city selection from localStorage
+        var storedCities = localStorage.getItem('selectedCities');
+        if (storedCities) {
+            $('#cityDropdownButton').text(storedCities); // Restore city button text
+            // Set checkboxes as selected based on stored values
+            const cities = storedCities.split(', ');
+            $('#citySelect .form-check-input').each(function() {
+                const cityLabel = $(this).next('label').text();
+                if (cities.includes(cityLabel)) {
+                    $(this).prop('checked', true);
+                }
+            });
+        } else {
+            $('#cityDropdownButton').text('City');
+        }
+
+        // Event listener for city checkboxes change
+        $('#citySelect .form-check-input').on('change', function() {
+            let selectedCities = [];
+            $('#citySelect .form-check-input:checked').each(function() {
+                selectedCities.push($(this).next('label').text());
+            });
+            $('#cityDropdownButton').text(selectedCities.join(', ') || 'City');
+            localStorage.setItem('selectedCities', selectedCities.join(', ')); // Persist selected cities
         });
-      });
-    </script>
-  </body>
+
+        // Restore tier selection from localStorage
+        var storedTiers = localStorage.getItem('selectedTiers');
+        if (storedTiers) {
+            $('#tierDropdownButton').text(storedTiers); // Restore tier button text
+            // Set checkboxes as selected based on stored values
+            const tiers = storedTiers.split(', ');
+            $('#tierSelect .form-check-input').each(function() {
+                const tierLabel = $(this).next('label').text();
+                if (tiers.includes(tierLabel)) {
+                    $(this).prop('checked', true);
+                }
+            });
+        } else {
+            $('#tierDropdownButton').text('Tiers');
+        }
+
+        // Event listener for tier checkboxes change
+        $('#tierSelect .form-check-input').on('change', function() {
+            let selectedTiers = [];
+            $('#tierSelect .form-check-input:checked').each(function() {
+                selectedTiers.push($(this).next('label').text());
+            });
+            $('#tierDropdownButton').text(selectedTiers.join(', ') || 'Tiers');
+            localStorage.setItem('selectedTiers', selectedTiers.join(', ')); // Persist selected tiers
+        });
+    });
+</script>
+
+
+
+
+
+<!--
+<script>
+    $(document).ready(function() {
+        // Event listener for dropdown item clicks
+        $('.dropdown-menu .dropdown-item').on('click', function() {
+            // Get the selected item's text
+            var selectedText = $(this).data('value');
+            // Update the button text
+            $('#serverSelect').text(selectedText);
+        });
+    });
+    document.querySelectorAll('#citySelect .form-check-input').forEach(input => {
+        input.addEventListener('change', function() {
+            let selectedCities = [];
+            document.querySelectorAll('#citySelect .form-check-input:checked').forEach(checked => {
+                selectedCities.push(checked.labels[0].textContent);
+            });
+            document.getElementById('cityDropdownButton').textContent = selectedCities.join(', ') || 'City';
+        });
+    });
+
+    // Function to update tierSelect dropdown label with selected tiers
+    document.querySelectorAll('#tierSelect .form-check-input').forEach(input => {
+        input.addEventListener('change', function() {
+            let selectedTiers = [];
+            document.querySelectorAll('#tierSelect .form-check-input:checked').forEach(checked => {
+                selectedTiers.push(checked.labels[0].textContent);
+            });
+            document.getElementById('tierDropdownButton').textContent = selectedTiers.join(', ') || 'Tiers';
+        });
+    });
+</script>
+-->
+<script>
+    document.querySelector('.btn-primary').addEventListener('click', function(event) {
+    event.preventDefault();  // Prevent automatic trigger
+    processData();
+});
+</script>
+</body>
+<script>
+    function processData() {
+        var server = document.getElementById('serverSelect').innerText.toLowerCase();
+        var marketAge = parseInt(document.getElementById('marketAge').value) || 20;
+        var selectedTiers = [];
+        var selectedCities = [];
+        var premium = document.getElementById('premium').checked;
+        document.querySelectorAll('#tierSelect .form-check-input:checked').forEach(function(checkbox) {
+            selectedTiers.push(parseInt(checkbox.value));  // Collect checked checkbox values
+        });
+        document.querySelectorAll('#citySelect .form-check-input:checked').forEach(function(checkbox) {
+            selectedCities.push(checkbox.value);  // Collect checked checkbox values
+        });
+        console.log(server,selectedTiers,selectedCities,marketAge, premium);
+        main(server,selectedTiers,selectedCities,marketAge, premium);
+    }
+</script>
+</body>
 </html>

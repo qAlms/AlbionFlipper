@@ -1,100 +1,39 @@
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
-}
-
-#tutorial li {
-    padding-bottom: 18px;
-}
-
-#tutorial img {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.vertical-text {
-    transform: rotate(90deg);
-    transform-origin: left top 0;
-}
-
-.table th {
-    border-top: 0 !important;
-}
-
-@media (max-width: 576px) {
-    .border-sm-0-reverse {
-        border-top: 0 !important;
-        border-bottom: 0 !important;
-        border-left: 0 !important;
-        border-right: 0 !important;
-    }
-}
-
-/* Ensures the header takes full width and aligns content to the left */
-header.container-fluid {
-    width: 100%;
-    padding: 0 1rem; /* Adds some padding for better spacing */
+/* Style for the trade-route container */
+.trade-route-container {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-  }
-  
-  /* Aligns form groups and controls to the left */
-  .d-flex {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  
-  /* Styles for form groups to reduce spacing */
-  .form-group {
-    margin-bottom: 0;
-    margin-right: 1rem; /* Adds spacing between form groups */
-  }
-  
-  /* Aligns form controls and labels */
-  .form-control-sm, .form-control-range, .form-check-input {
-    max-width: 120px; /* Adjusted width to keep form compact */
-    margin-right: 0.5rem; /* Adds spacing between elements */
-  }
-  
-  /* Styles for checkboxes and labels to align them */
-  .form-check-inline {
-    margin-right: 0.5rem; /* Adds spacing between checkboxes */
-  }
-  
-  /* Reduces the size of the range inputs and numbers */
-  .form-control-range, .form-control-sm {
-    width: auto;
-  }
-  
-  /* Positions the button to the right of the control components */
-  .text-center {
-    margin-left: auto;
-  }
-  
-  /* Ensures button fits well in the container */
-  .btn-outline-primary {
-    margin-top: 0;
-  }
-  
-          /* Style for the message container */
-          .message-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            display: none; /* Initially hidden */
-            z-index: 1000; /* Make sure it appears on top */
-        }
+    justify-content: space-between;
+    padding: 10px;
+}
+
+/* Style for each trade block */
+.trade-block {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 0 5px;
+    width: 45%;  /* Adjust width to fit both blocks in a row */
+    position: relative; /* Needed for positioning the age text */
+}
+
+/* Style for the arrow between blocks */
+.arrow {
+    font-size: 24px;
+    padding: 0 10px;
+}
+
+/* Style for the age text */
+.age-text {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 12px;   /* Make the text smaller */
+    color: gray;       /* Make the text gray */
+}
+
+.fixed-width {
+    width: 150px; /* Set your desired fixed width */
+    white-space: nowrap;   /* Prevent text from wrapping */
+    overflow: hidden;      /* Hide the overflow text */
+    text-overflow: ellipsis; /* Add ellipsis when text overflows */
+}
+
