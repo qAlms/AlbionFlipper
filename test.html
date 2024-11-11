@@ -10,74 +10,166 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css">
     </head>
 <body>
+    <div class="toolbar p-3">
+        <div class="d-flex align-items-center gap-2 button-container">
+            <!-- Server Dropdown -->
+            <div class="dropdown" id="serverSelect">
+                <button class="btn btn-light dropdown-toggle fixed-width" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Server
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="serverSelect">
+                    <li><a class="dropdown-item" href="#" data-value="Europe">Europe</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="Asia">Asia</a></li>
+                    <li><a class="dropdown-item" href="#" data-value="Americas">Americas</a></li>
+                </ul>
+            </div>
     
-<div class="toolbar p-3">
-    <div class="d-flex align-items-center gap-2 button-container">
-        <!-- Server Dropdown -->
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="serverSelect" data-bs-toggle="dropdown" aria-expanded="false">
-                Server
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="serverSelect">
-                <li><a class="dropdown-item" href="#" data-value="Europe">Europe</a></li>
-                <li><a class="dropdown-item" href="#" data-value="Asia">Asia</a></li>
-                <li><a class="dropdown-item" href="#" data-value="Americas">Americas</a></li>
-            </ul>
+            <!-- Tiers Dropdown -->
+            <div class="dropdown" id="tierSelect">
+                <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="tierDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                    Tiers
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="tierDropdownButton">
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="4" id="tier4" /> <label class="form-check-label" for="tier4">4</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="5" id="tier5" /> <label class="form-check-label" for="tier5">5</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="6" id="tier6" /> <label class="form-check-label" for="tier6">6</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="7" id="tier7" /> <label class="form-check-label" for="tier7">7</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="8" id="tier8" checked/> <label class="form-check-label" for="tier8">8</label></div></a></li>
+                </ul>
+            </div>
+    
+            <!-- Cities Dropdown -->
+            <div class="dropdown" id="citySelect">
+                <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="cityDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                    Cities
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="cityDropdownButton">
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Martlock" id="martlock" /> <label class="form-check-label" for="martlock">Martlock</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Fort Sterling" id="fortsterling" /> <label class="form-check-label" for="fortsterling">Fort Sterling</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Thetford" id="thetford" /> <label class="form-check-label" for="thetford">Thetford</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Lymhurst" id="lymhurst" /> <label class="form-check-label" for="lymhurst">Lymhurst</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Bridgewatch" id="bridgewatch" /> <label class="form-check-label" for="bridgewatch">Bridgewatch</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Caerleon" id="caerleon"/> <label class="form-check-label" for="caerleon">Caerleon</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Brecilien" id="brecilien" /> <label class="form-check-label" for="brecilien">Brecilien</label></div></a></li>
+                    <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Black Market" id="blackmarket"/> <label class="form-check-label" for="blackmarket">Black Market</label></div></a></li>
+                </ul>
+            </div>
+    
+            <!-- Market Age Input -->
+            <input type="number" class="form-control" id="marketAge" style="width: 150px;" placeholder="Age" aria-label="Market Age">
+    
+            <!-- Premium Checkbox -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="premium" checked/>
+                <label class="form-check-label" for="premium">Premium?</label>
+            </div>
+    
+            <!-- Find Flips Button -->
+            <button type="button" onclick="" class="btn btn-primary">Find Flips!</button>
         </div>
-
-        <!-- Tiers Dropdown -->
-        <div class="dropdown" id="tierSelect">
-            <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="tierDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
-                Tiers
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="tierDropdownButton">
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="4" id="tier4" /> <label class="form-check-label" for="tier4">4</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="5" id="tier5" /> <label class="form-check-label" for="tier5">5</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="6" id="tier6" /> <label class="form-check-label" for="tier6">6</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="7" id="tier7" /> <label class="form-check-label" for="tier7">7</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="8" id="tier8" /> <label class="form-check-label" for="tier8">8</label></div></a></li>
-            </ul>
+    
+        <div class="progress" style="height: 20px; width: 100%; margin-top: 10px;">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-
-        <!-- Cities Dropdown -->
-        <div class="dropdown" id="citySelect">
-            <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="cityDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
-                Cities
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="cityDropdownButton">
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Martlock" id="martlock" /> <label class="form-check-label" for="martlock">Martlock</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Fort Sterling" id="fortsterling" /> <label class="form-check-label" for="fortsterling">Fort Sterling</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Thetford" id="thetford" /> <label class="form-check-label" for="thetford">Thetford</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Lymhurst" id="lymhurst" /> <label class="form-check-label" for="lymhurst">Lymhurst</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Bridgewatch" id="bridgewatch" /> <label class="form-check-label" for="bridgewatch">Bridgewatch</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Caerleon" id="caerleon" /> <label class="form-check-label" for="caerleon">Caerleon</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Brecilien" id="brecilien" /> <label class="form-check-label" for="brecilien">Brecilien</label></div></a></li>
-                <li><a class="dropdown-item" href="#"><div class="form-check"><input class="form-check-input" type="checkbox" value="Black Market" id="blackmarket" /> <label class="form-check-label" for="blackmarket">Black Market</label></div></a></li>
-            </ul>
-        </div>
-
-        <!-- Market Age Input -->
-        <input type="number" class="form-control fixed-width" id="marketAge" placeholder="Market Age (default 20)" aria-label="Market Age">
-        <div class="form-check"><input class="form-check-input" type="checkbox" value="true" id="premium" /> <label class="form-check-label" for="premium">Premium?</label></div>
-        <!-- Find Flips Button -->
-        <button type="button" onclick="" class="btn btn-primary fixed-width">Find Flips!</button>
     </div>
-</div>
-  
-<table class="table sortable" id="tradesTable" data-toolbar=".toolbar" data-toggle="table" data-sortable="true">
-    <thead>
-        <tr>
-            <th data-field="item" data-sortable="true">Item</th>
-            <th data-field="profit" data-sortable="true">Profit</th>
-            <th data-visible="true" data-field="tradeRoute" data-sortable="true">Flip!</th>
-        </tr>
-    </thead>
-</table>
+    
+    
+    
+        <!-- Full-width Progress Bar -->
+        
+    
+        <!-- Table -->
+        <table class="table sortable table-responsive table-sm" id="tradesTable" data-toggle="table" data-sortable="true">
+            <thead>
+                <tr>
+                    <th data-field="item" data-sortable="false" class="w-15">Item</th>
+                    <th data-field="profit" data-sortable="true" class="w-15">Profit</th>
+                    <th data-visible="true" data-field="tradeRoute" data-sortable="false">Flip!</th>
+                </tr>
+            </thead>
+        </table>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.js"></script>
 <script src="js/test.js" defer></script>
+
+<script>
+    $(document).ready(function() {
+        // Restore server selection from localStorage
+        var storedServer = localStorage.getItem('selectedServer');
+        if (storedServer) {
+            $('#serverSelect .dropdown-toggle').text(storedServer); // Update server button text within the div
+        } else {
+            $('#serverSelect .dropdown-toggle').text('Server'); // Default label if no server selection is stored
+        }
+
+        // Event listener for server dropdown item clicks
+        $('#serverSelect .dropdown-menu .dropdown-item').on('click', function() {
+            var selectedText = $(this).data('value');
+            $('#serverSelect .dropdown-toggle').text(selectedText); // Update the server button text
+            localStorage.setItem('selectedServer', selectedText); // Persist the selected server
+        });
+
+        // Restore city selection from localStorage
+        var storedCities = localStorage.getItem('selectedCities');
+        if (storedCities) {
+            $('#cityDropdownButton').text(storedCities); // Restore city button text
+            // Set checkboxes as selected based on stored values
+            const cities = storedCities.split(', ');
+            $('#citySelect .form-check-input').each(function() {
+                const cityLabel = $(this).next('label').text();
+                if (cities.includes(cityLabel)) {
+                    $(this).prop('checked', true);
+                }
+            });
+        } else {
+            $('#cityDropdownButton').text('City');
+        }
+
+        // Event listener for city checkboxes change
+        $('#citySelect .form-check-input').on('change', function() {
+            let selectedCities = [];
+            $('#citySelect .form-check-input:checked').each(function() {
+                selectedCities.push($(this).next('label').text());
+            });
+            $('#cityDropdownButton').text(selectedCities.join(', ') || 'City');
+            localStorage.setItem('selectedCities', selectedCities.join(', ')); // Persist selected cities
+        });
+
+        // Restore tier selection from localStorage
+        var storedTiers = localStorage.getItem('selectedTiers');
+        if (storedTiers) {
+            $('#tierDropdownButton').text(storedTiers); // Restore tier button text
+            // Set checkboxes as selected based on stored values
+            const tiers = storedTiers.split(', ');
+            $('#tierSelect .form-check-input').each(function() {
+                const tierLabel = $(this).next('label').text();
+                if (tiers.includes(tierLabel)) {
+                    $(this).prop('checked', true);
+                }
+            });
+        } else {
+            $('#tierDropdownButton').text('Tiers');
+        }
+
+        // Event listener for tier checkboxes change
+        $('#tierSelect .form-check-input').on('change', function() {
+            let selectedTiers = [];
+            $('#tierSelect .form-check-input:checked').each(function() {
+                selectedTiers.push($(this).next('label').text());
+            });
+            $('#tierDropdownButton').text(selectedTiers.join(', ') || 'Tiers');
+            localStorage.setItem('selectedTiers', selectedTiers.join(', ')); // Persist selected tiers
+        });
+    });
+</script>
+
+
+
+
+
+<!--
 <script>
     $(document).ready(function() {
         // Event listener for dropdown item clicks
@@ -109,6 +201,7 @@
         });
     });
 </script>
+-->
 <script>
     document.querySelector('.btn-primary').addEventListener('click', function(event) {
     event.preventDefault();  // Prevent automatic trigger
@@ -119,7 +212,7 @@
 <script>
     function processData() {
         var server = document.getElementById('serverSelect').innerText.toLowerCase();
-        var marketAge = parseInt(document.getElementById('marketAge').value);
+        var marketAge = parseInt(document.getElementById('marketAge').value) || 20;
         var selectedTiers = [];
         var selectedCities = [];
         var premium = document.getElementById('premium').checked;
@@ -129,6 +222,7 @@
         document.querySelectorAll('#citySelect .form-check-input:checked').forEach(function(checkbox) {
             selectedCities.push(checkbox.value);  // Collect checked checkbox values
         });
+        console.log(server,selectedTiers,selectedCities,marketAge, premium);
         main(server,selectedTiers,selectedCities,marketAge, premium);
     }
 </script>
