@@ -56,9 +56,8 @@ async function getMarketData(region,cities,items) {
     };
     const citiesString = cities.join(',');
     url = `${server}/api/v2/stats/Prices/${items}.json?locations=${cities}&qualities=0,1,2,3,4`
-    return await fetchData(url)
+    return await fetchData(url);
 }
-
 
 async function main(server, tier, cities, marketAge, premium) {
     let taxModifier; 
@@ -72,11 +71,17 @@ async function main(server, tier, cities, marketAge, premium) {
     const chunkSize = 250; 
     const itemChunks = splitArrayIntoChunks(selectedItems, chunkSize);
     const allItems = [];
+    const totalChunks = itemChunks.length;
+    let completedChunks = 0; 
     for (const chunk of itemChunks) {
         const data = await getMarketData(server,cities,chunk);
         if (data) {
             allItems.push(...data);  // Merge the fetched data
         }
+        completedChunks++;
+        const progress = (completedChunks / totalChunks) * 100;
+        document.getElementById("progressBar").style.width = `${progress}%`;
+        document.getElementById("progressBar").setAttribute('aria-valuenow', progress);  
     }
     const profitableTrades = findProfitableTradesBetweenCities(allItems, cities, taxModifier, marketAge);
     const topProfitableTrades  = new Map();
