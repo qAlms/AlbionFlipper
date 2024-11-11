@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html data-bs-theme="dark">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,11 +13,17 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.5/dist/bootstrap-table.min.css">
     </head>
 <body>
+    <div class="d-flex justify-content-end me-3">
+        <label class="form-check form-switch">
+          <input type="checkbox" id="themeToggle" class="form-check-input">
+          <span>Dark Mode</span>
+        </label>
+      </div>
     <div class="toolbar p-3">
         <div class="d-flex align-items-center gap-2 button-container">
             <!-- Server Dropdown -->
             <div class="dropdown" id="serverSelect">
-                <button class="btn btn-light dropdown-toggle fixed-width" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle fixed-width" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Server
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="serverSelect">
@@ -29,7 +35,7 @@
     
             <!-- Tiers Dropdown -->
             <div class="dropdown" id="tierSelect">
-                <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="tierDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle fixed-width" type="button" id="tierDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
                     Tiers
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="tierDropdownButton">
@@ -43,7 +49,7 @@
     
             <!-- Cities Dropdown -->
             <div class="dropdown" id="citySelect">
-                <button class="btn btn-light dropdown-toggle fixed-width" type="button" id="cityDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle fixed-width" type="button" id="cityDropdownButton" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false">
                     Cities
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="cityDropdownButton">
@@ -166,6 +172,22 @@
             localStorage.setItem('selectedTiers', selectedTiers.join(', ')); // Persist selected tiers
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const themeToggle = document.getElementById("themeToggle");
+
+    // Load theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-bs-theme", savedTheme);
+    themeToggle.checked = savedTheme === "dark";
+
+    themeToggle.addEventListener("change", function () {
+        const theme = themeToggle.checked ? "dark" : "light";
+        document.documentElement.setAttribute("data-bs-theme", theme);
+        localStorage.setItem("theme", theme); // Save theme to localStorage
+    });
+});
+
 </script>
 
 
