@@ -148,6 +148,12 @@ $(document).ready(function () {
     });
 });
 </script>
+<script>
+    document.querySelector('.btn-primary').addEventListener('click', function(event) {
+    event.preventDefault();  // Prevent automatic trigger
+    processData();
+});
+</script>
 </body>
 <script>
     function processData() {
