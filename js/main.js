@@ -117,10 +117,21 @@ function populateTradesTable(trades) {
             //{ field: 'itemTier', sortable: true, visible: true },
             //{ field: 'itemName', sortable: true, visible: true },
             { field: 'profit', sortable: true, visible: true },
-            { field: 'tradeRoute', sortable: true, visible: true, formatter: tradeRouteFormatter },
+            { field: 'risk', sortable: false, visible: true, formatter: buySellDiff},
+            { field: 'tradeRoute', sortable: true, visible: true, formatter: tradeRouteFormatter }
         ]
     });
 }
+
+function buySellDiff(value, row) {
+    if (row.risk > 0.90 ) { 
+        risk = `<div title="Order may get fulfilled soon!">${row.risk} ⚠️</div>`;
+    } else if (row.risk === "N/A" ) {
+        risk = `<div title="Data is missing to calculate risk">${row.risk}</div>`;
+    } else { risk = row.risk }
+    return risk;
+}
+
 function formatItems(value, row) { 
     return `
     <img src="https://render.albiononline.com/v1/item/${row.itemId}.png" alt="Item Image" width="50" height="50">
@@ -228,9 +239,15 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                 } = itemA;
                 const {
                     buy_price_max: rawBuyPriceB,
+                    sell_price_min: minBuyOrder,
                     city: cityB,
                     quality: qualityB
                 } = itemB;
+
+                risk = (rawBuyPriceB * 100 / minBuyOrder)/100; 
+                //console.log(risk, typeof(risk));
+                if (risk === Infinity || risk > 1 ) { risk = "N/A" } else { risk = risk.toFixed(2)}
+
                 const buyPriceB = parseInt(rawBuyPriceB * taxModifier);
                 // Check for profitable trade, ensuring quality constraints are met
                 if (buyPriceB > sellPriceA && sellPriceA > 0 && cityA != cityB && qualityA >= qualityB) {
@@ -245,6 +262,7 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                         sellAge: sellAge,
                         buyAge: buyAge,
                         profit: buyPriceB - sellPriceA,
+                        risk: risk, 
                     });
                 }
             }
