@@ -5,7 +5,7 @@ AlbionFlipper uses data collected by [The Albion Online Data Project](https://ww
 
 An example of some trades retrieved by AlbionFlipper:
 
-![alt text](https://github.com/klutten99/Flipper/blob/master/images/albionflipper_example.png)
+![alt text](img/main.png)
 
 As you can see in the image above, the 8.2 Elder's Halberd can be sold for a profit of 626 296 silver if bought in Martlock and sold to the BM.
 
