@@ -59,10 +59,6 @@ While you are updating the items make sure the Albion Data Client is sending the
 
 ![alt text](img/results.png)
 
-![alt text](https://github.com/klutten99/Flipper/blob/master/images/9.png) 
-
-![alt text](https://github.com/klutten99/Flipper/blob/master/images/9_2.png) 
-
 ### Some Last Words and Tips
 This is merely a suggestion on how to get started with Flipper. Updating items in this manner will usually not work for lower tiers that have a lot more items for sale than tier 8. In that case you will for example have to update each quality or enchantment one by one. If you know which items are usually profitable then you can only update these.
 
