@@ -1,7 +1,7 @@
 # Flipper - Quick Overview
 AlbionFlipper is a Black Market flipping tool for the sandbox MMORPG Albion Online.
 
-AlbionFlipper uses data collected by [The Albion Online Data Project](https://www.albion-online-data.com/) to compare prices of buy orders in the [Black Market](https://wiki.albiononline.com/wiki/Black_Market?crf=3AYZB3G7UG&utm_source=pmax&utm_medium=cpc&utm_campaign=2PM&gclid=Cj0KCQiAifz-BRDjARIsAEElyGICyl2-9OlfLx1Uqnkg4dQPwsEvhM6YWQcnx-S_M4Un9ZQ2JPpYarwaAhP9EALw_wcB) in Caerleon with sell orders in the markets of royal cities and Caerleon. 
+AlbionFlipper uses data collected by [The Albion Online Data Project](https://www.albion-online-data.com/) to compare prices of buy orders in the [Black Market](https://wiki.albiononline.com/wiki/Black_Market) in Caerleon with sell orders in the markets of royal cities and Caerleon. 
 
 To start using AlbionFlipper, [click here](https://vekeng.github.io/AlbionFlipper/)
 
@@ -10,8 +10,6 @@ An example of some trades retrieved by AlbionFlipper:
 ![alt text](img/main.png)
 
 As you can see in the image above, the 6.4 Master's Infernal Staff can be sold for a profit of 1 956 402 silver if bought in Bridgewatch and sold to the BM.
-
-You can see AlbionFlipper in action [here](https://www.youtube.com/watch?v=cz4VEmaDG7k&ab_channel=KillAxe22). (YouTube video, 2 minutes)
 
 Feel free to join our discord [here](https://discord.gg/2ySkAuX).
 <br/><br/>
