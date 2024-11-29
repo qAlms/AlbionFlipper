@@ -1,15 +1,15 @@
 # Flipper - Quick Overview
 AlbionFlipper is a Black Market flipping tool for the sandbox MMORPG Albion Online.
 
-AlbionFlipper uses data collected by [The Albion Online Data Project](https://www.albion-online-data.com/) to compare prices of buy orders in the [Black Market](https://wiki.albiononline.com/wiki/Black_Market?crf=3AYZB3G7UG&utm_source=pmax&utm_medium=cpc&utm_campaign=2PM&gclid=Cj0KCQiAifz-BRDjARIsAEElyGICyl2-9OlfLx1Uqnkg4dQPwsEvhM6YWQcnx-S_M4Un9ZQ2JPpYarwaAhP9EALw_wcB) in Caerleon with sell orders in the markets of royal cities and Caerleon. It displays items that have a higher buy order price in the BM than the sell order in one of the cities, which basically means that if you buy that item from that city and sell in on the BM, you will make a profit.
+AlbionFlipper uses data collected by [The Albion Online Data Project](https://www.albion-online-data.com/) to compare prices of buy orders in the [Black Market](https://wiki.albiononline.com/wiki/Black_Market?crf=3AYZB3G7UG&utm_source=pmax&utm_medium=cpc&utm_campaign=2PM&gclid=Cj0KCQiAifz-BRDjARIsAEElyGICyl2-9OlfLx1Uqnkg4dQPwsEvhM6YWQcnx-S_M4Un9ZQ2JPpYarwaAhP9EALw_wcB) in Caerleon with sell orders in the markets of royal cities and Caerleon. 
+
+To start using AlbionFlipper, [click here](https://vekeng.github.io/AlbionFlipper/)
 
 An example of some trades retrieved by AlbionFlipper:
 
 ![alt text](img/main.png)
 
-As you can see in the image above, the 8.2 Elder's Halberd can be sold for a profit of 626 296 silver if bought in Martlock and sold to the BM.
-
-To get started with AlbionFlipper, download this repository and open the index.html with your browser. Next, you have to download Albion Data Client to update the item information (the age fields). You can download their client from [here](https://www.albion-online-data.com/).
+As you can see in the image above, the 6.4 Master's Infernal Staff can be sold for a profit of 1 956 402 silver if bought in Bridgewatch and sold to the BM.
 
 You can see AlbionFlipper in action [here](https://www.youtube.com/watch?v=cz4VEmaDG7k&ab_channel=KillAxe22). (YouTube video, 2 minutes)
 
@@ -51,11 +51,13 @@ While you are updating the items make sure the Albion Data Client is sending the
 
   7. Fast travel to the **Black Market** and update the same items as you did in the previous market (repeat **steps 3 – 6**). **Hint: have one of your characters be in the Black Market so you can quickly switch characters and update the Black Market without fast travel!**
 
-  8. Choose the appropriate parameters in Flipper and click the “Find Flips!” button. Make sure the **Max BM Age** and **Max City Age** are as low as possible. The API has no way of knowing when an item has been sold, so if you choose a too large age there is a chance the buy order has already been filled. In our example we choose the following parameters:
+  8. Choose the appropriate parameters in Flipper and click the “Find Flips!” button. Make sure the **Age** is as low as possible. The API has no way of knowing when an item has been sold, so if you choose a too large **Age** there is a chance the buy order has already been filled. 
 
-![alt text](https://github.com/klutten99/Flipper/blob/master/images/8.png) 
+![alt text](img/settings.png)
 
-  9. Sort the table by profits by clicking the **Profit (with tax)** column title (marked with red box) and execute the top trades. If there are a lot of different entries feel free to add the ones you want to execute into the cart by pressing the plus button in the cart column (marked with red box). **Hint: you can click on any cell in the table to copy its content. You can then, for example, paste the name of the item in the market search to find it and buy it faster!**
+  9. You should see items that you can flip. 
+
+![alt text](img/results.png)
 
 ![alt text](https://github.com/klutten99/Flipper/blob/master/images/9.png) 
 
