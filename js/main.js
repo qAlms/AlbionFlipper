@@ -256,7 +256,7 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                         sellToCity: cityB,
                         itemId: item_id,
                         sellOrder: sellPriceA,
-                        buyOrder: buyPriceB,
+                        buyOrder: rawBuyPriceB,
                         sellQuality: mapQuality(qualityA),
                         buyQuality: mapQuality(qualityB),
                         sellAge: sellAge,
