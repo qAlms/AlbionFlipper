@@ -15,7 +15,7 @@ Feel free to join our discord [here](https://discord.gg/2ySkAuX).
 <br/><br/>
 
 ## Full User Tutorial
-For the best possible results, it is strongly suggested to use the Albion Data Client together with this tool. The API has no way of telling when an item has been sold, so it is therefore best to assume that if either the **BM Age** or **City Age** are high, the buy order has already been filled.
+For the best possible results, it is strongly suggested to use the Albion Data Client together with this tool. The API has no way of telling when an item has been sold, so it is therefore best to assume that if **Age** are high, the buy order has already been filled.
 
 As the best results are achieved by using the Albion Data Client, this tutorial will explain how to use AlbionFlipper together with the Albion Data Client. Start by downloading the data client from: [www.albion-online-data.com](https://www.albion-online-data.com/)
 
