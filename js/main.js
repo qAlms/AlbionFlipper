@@ -1,3 +1,21 @@
+// Definirea funcției mapQuality
+function mapQuality(quality) {
+    switch (quality) {
+        case 0:
+            return 'Normal';
+        case 1:
+            return 'Good';
+        case 2:
+            return 'Excellent';
+        case 3:
+            return 'Masterpiece';
+        case 4:
+            return 'Artifact';
+        default:
+            return 'Unknown'; // În cazul în care valoarea calității nu este definită
+    }
+}
+
 async function fetchData(url) {
     try {
         const response = await fetch(url);
