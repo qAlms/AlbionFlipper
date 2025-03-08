@@ -83,29 +83,77 @@ async function main(server, tier, cities, marketAge, premium) {
         document.getElementById("progressBar").style.width = `${progress}%`;
         document.getElementById("progressBar").setAttribute('aria-valuenow', progress);  
     }
-    const profitableTrades = findProfitableTradesBetweenCities(allItems, cities, taxModifier, marketAge);
-    const topProfitableTrades  = new Map();
-    profitableTrades.forEach(trade => {
-        const itemId = trade.itemId; 
-        const profit = trade.profit;
-        if (!topProfitableTrades.has(itemId) || profit > topProfitableTrades.get(itemId).profit) {
-            // Update with the new trade if it has a higher profit
-            topProfitableTrades.set(itemId, trade);
-          }
-    });
-    const topProfitableTradesWithNames = fillNames(items,topProfitableTrades)
-    populateTradesTable(topProfitableTradesWithNames);
+    async function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge) {
+    const profitableTrades = [];
+    const now = new Date();
+
+    // Group items by item_id for easier lookup  
+    const itemsById = data.reduce((acc, item) => {
+        if (!acc[item.item_id]) acc[item.item_id] = [];
+        acc[item.item_id].push(item);
+        return acc;
+    }, {});
+  
+    // Iterate over each item type
+    for (const item_id in itemsById) {
+        const items = itemsById[item_id];
+
+        // Compare listings within the defined cities only
+        for (let i = 0; i < items.length; i++) {
+            const itemA = items[i];
+
+            if (!cities.includes(itemA.city)) continue;
+            const sellDate = new Date(`${itemA.sell_price_min_date}Z`);
+            const sellAge = parseInt((now - sellDate) / 60 / 1000);
+            if (sellAge > marketAge) continue;
+
+            for (let j = 0; j < items.length; j++) {
+                if (i === j) continue; // Avoid comparing the same city with itself
+
+                const itemB = items[j];
+                if (!cities.includes(itemB.city) || itemA.city === itemB.city) continue;
+
+                const buyDate = new Date(`${itemB.buy_price_max_date}Z`);
+                const buyAge = parseInt((now - buyDate) / 60 / 1000); 
+                if (buyAge > marketAge) continue;
+
+                const {
+                    sell_price_min: sellPriceA,
+                    city: cityA,
+                    quality: qualityA
+                } = itemA;
+                const {
+                    buy_price_max: rawBuyPriceB,
+                    sell_price_min: minBuyOrder,
+                    city: cityB,
+                    quality: qualityB
+                } = itemB;
+
+                let risk = (rawBuyPriceB * 100 / minBuyOrder) / 100; 
+                if (risk === Infinity || risk > 1) { risk = "N/A"; } else { risk = risk.toFixed(2); }
+
+                const buyPriceB = parseInt(rawBuyPriceB * taxModifier);
+
+                if (buyPriceB > sellPriceA && sellPriceA > 0 && cityA !== cityB && qualityA >= qualityB) {
+                    profitableTrades.push({
+                        buyFromCity: cityA,
+                        sellToCity: cityB,
+                        itemId: item_id,
+                        sellOrder: sellPriceA,
+                        buyOrder: rawBuyPriceB,
+                        sellQuality: mapQuality(qualityA),
+                        buyQuality: mapQuality(qualityB),
+                        sellAge: sellAge,
+                        buyAge: buyAge,
+                        profit: buyPriceB - sellPriceA,
+                        risk: risk, 
+                    });
+                }
+            }
+        }
+    }
+    return profitableTrades;
 }
-/*
-function populateTradesTable(trades) {
-    console.log(Array.from(trades.values()));
-    $('#tradesTable').bootstrapTable('refreshOptions', {
-        
-        data: Array.from(trades.values()), // Pass the array of trades data
-        sortable: true
-    });
-}
-*/
 function populateTradesTable(trades) {
     $('#tradesTable').bootstrapTable('refreshOptions', {
         data: Array.from(trades.values()), // Pass the array of trades data
