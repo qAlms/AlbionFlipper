@@ -288,4 +288,4 @@ function mapQuality(quality) {
             return "Normal"
     };
 }
-//main()
+main()
