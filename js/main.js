@@ -337,8 +337,4 @@ function mapQuality(quality) {
     };
 }
 //main()
-    
-window.main = function(server, selectedTiers, selectedCities, marketAge, premium) {
-    console.log("Running main function", server, selectedTiers, selectedCities, marketAge, premium);
-    // Implementarea aici
-};
+}
