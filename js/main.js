@@ -170,6 +170,10 @@ function populateTradesTable(trades) {
             { field: 'tradeRoute', sortable: true, visible: true, formatter: tradeRouteFormatter }
         ]
     });
+    setTimeout(() => {
+        const tableData = $('#tradesTable').bootstrapTable('getData');
+        console.log("📊 Total flips in table:", tableData.length);
+    }, 500);
 }
 
 function buySellDiff(value, row) {
