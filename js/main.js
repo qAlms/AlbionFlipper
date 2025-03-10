@@ -1,4 +1,3 @@
-// Definirea funcției mapQuality
 function mapQuality(quality) {
     switch (quality) {
         case 0:
