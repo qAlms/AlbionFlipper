@@ -128,20 +128,27 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                 const sellPriceA = itemA.sell_price_min;
                 const buyPriceB = parseInt(itemB.buy_price_max * taxModifier);
 
+                console.log(`Item: ${item_id} | Sell: ${sellPriceA} in ${itemA.city} | Buy: ${itemB.buy_price_max} in ${itemB.city} | Profit: ${buyPriceB - sellPriceA}`);
+
                 if (buyPriceB > sellPriceA && sellPriceA > 0) {
-                    profitableTrades.push({
-                        buyFromCity: itemA.city,
-                        sellToCity: itemB.city,
-                        itemId: item_id,
-                        sellOrder: sellPriceA,
-                        buyOrder: itemB.buy_price_max,
-                        sellQuality: mapQuality(itemA.quality),
-                        buyQuality: mapQuality(itemB.quality),
-                        sellAge: Math.round((now - sellDate) / 60000),
-                        buyAge: Math.round((now - buyDate) / 60000),
-                        profit: buyPriceB - sellPriceA,
-                        risk: itemB.buy_price_max / itemB.sell_price_min || "N/A"
-                    });
+                    const profit = buyPriceB - sellPriceA;
+                    
+                    // Verifică dacă profitul este peste 10.000
+                    if (profit > 10000) {
+                        profitableTrades.push({
+                            buyFromCity: itemA.city,
+                            sellToCity: itemB.city,
+                            itemId: item_id,
+                            sellOrder: sellPriceA,
+                            buyOrder: itemB.buy_price_max,
+                            sellQuality: mapQuality(itemA.quality),
+                            buyQuality: mapQuality(itemB.quality),
+                            sellAge: Math.round((now - sellDate) / 60000),
+                            buyAge: Math.round((now - buyDate) / 60000),
+                            profit: profit,
+                            risk: Math.min(itemB.buy_price_max / itemB.sell_price_min, 1) || "N/A"
+                        });
+                    }
                 }
             }
         }
