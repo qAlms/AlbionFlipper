@@ -126,27 +126,22 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
                 if ((now - buyDate) / 60000 > marketAge) continue;
 
                 const sellPriceA = itemA.sell_price_min;
-                const buyPriceB = itemB.buy_price_max * taxModifier;
+                const buyPriceB = parseInt(itemB.buy_price_max * taxModifier);
 
                 if (buyPriceB > sellPriceA && sellPriceA > 0) {
-                    const profit = buyPriceB - sellPriceA;
-                    console.log(`Profit: ${profit}, Buy Price: ${buyPriceB}, Sell Price: ${sellPriceA}`);
-                    
-                    if (profit > 10000) { // Filtrare pentru profituri mai mari de 10.000
-                        profitableTrades.push({
-                            buyFromCity: itemA.city,
-                            sellToCity: itemB.city,
-                            itemId: item_id,
-                            sellOrder: sellPriceA,
-                            buyOrder: itemB.buy_price_max,
-                            sellQuality: mapQuality(itemA.quality),
-                            buyQuality: mapQuality(itemB.quality),
-                            sellAge: Math.round((now - sellDate) / 60000),
-                            buyAge: Math.round((now - buyDate) / 60000),
-                            profit: profit,
-                            risk: sellPriceA > 0 ? Math.min(1, itemB.buy_price_max / sellPriceA) : "N/A"
-                        });
-                    }
+                    profitableTrades.push({
+                        buyFromCity: itemA.city,
+                        sellToCity: itemB.city,
+                        itemId: item_id,
+                        sellOrder: sellPriceA,
+                        buyOrder: itemB.buy_price_max,
+                        sellQuality: mapQuality(itemA.quality),
+                        buyQuality: mapQuality(itemB.quality),
+                        sellAge: Math.round((now - sellDate) / 60000),
+                        buyAge: Math.round((now - buyDate) / 60000),
+                        profit: buyPriceB - sellPriceA,
+                        risk: itemB.buy_price_max / itemB.sell_price_min || "N/A"
+                    });
                 }
             }
         }
@@ -155,3 +150,73 @@ function findProfitableTradesBetweenCities(data, cities, taxModifier, marketAge)
     return profitableTrades;
 }
 
+function populateTradesTable(trades) {
+    $('#tradesTable').bootstrapTable('refreshOptions', {
+        data: trades,
+        sortable: true,
+        sortOrder: 'desc',
+        sortName: 'profit',
+        columns: [
+            { field: 'item', visible: true, formatter: formatItems },
+            { field: 'profit', sortable: true, visible: true },
+            { field: 'risk', sortable: false, visible: true, formatter: buySellDiff },
+            { field: 'tradeRoute', sortable: true, visible: true, formatter: tradeRouteFormatter }
+        ]
+    });
+}
+
+function buySellDiff(value, row) {
+    if (row.risk > 0.90) {
+        return `<div title="Order may get fulfilled soon!">${row.risk} ⚠️</div>`;
+    } else if (row.risk === "N/A") {
+        return `<div title="Data is missing to calculate risk">${row.risk}</div>`;
+    }
+    return row.risk;
+}
+
+function formatItems(value, row) {
+    return `
+    <img src="https://render.albiononline.com/v1/item/${row.itemId}.png" alt="Item Image" width="50" height="50">
+    ${row.itemName} (Tier ${row.itemTier})
+    `;
+}
+
+function tradeRouteFormatter(value, row) {
+    return `
+        <div class="trade-route-container">
+            <div class="trade-block">
+                <strong>City:</strong> ${row.buyFromCity}<br>
+                <strong>Price:</strong> ${row.sellOrder}<br>
+                <strong>Quality:</strong> ${row.sellQuality}
+                <div class="age-text">Age: ${row.sellAge} min</div>
+            </div>
+            <span class="arrow">→</span>
+            <div class="trade-block">
+                <strong>City:</strong> ${row.sellToCity}<br>
+                <strong>Price:</strong> ${row.buyOrder}<br>
+                <strong>Quality:</strong> ${row.buyQuality}
+                <div class="age-text">Age: ${row.buyAge} min</div>
+            </div>
+        </div>
+    `;
+}
+
+function fillNames(items, trades) {
+    const itemLookup = new Map(items.map(item => [item.ID, item]));
+    trades.forEach(item => {
+        const itemData = itemLookup.get(item.itemId);
+        if (itemData) {
+            item.itemName = itemData.name;
+            item.itemTier = `${itemData.tier}.${itemData.enchantment}`;
+        }
+    });
+    return trades;
+}
+
+function splitArrayIntoChunks(array, chunkSize) {
+    return Array.from({ length: Math.ceil(array.length / chunkSize) }, (_, i) =>
+        array.slice(i * chunkSize, i * chunkSize + chunkSize)
+    );
+}
+
+window.main = main;
