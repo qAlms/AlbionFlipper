@@ -5,11 +5,11 @@ function mapQuality(quality) {
         case 1:
             return 'Good';
         case 2:
-            return 'Excellent';
+            return 'Outstanding';
         case 3:
-            return 'Masterpiece';
+            return 'Excelent';
         case 4:
-            return 'Artifact';
+            return 'Masterpiece';
         default:
             return 'Unknown'; // În cazul în care valoarea calității nu este definită
     }
@@ -74,7 +74,7 @@ async function main(server, tiers, cities, marketAge, premium) {
     }
 
     const selectedItems = items.filter(item => tiers.includes(item.tier)).map(item => item.ID);
-    const chunkSize = 250;
+    const chunkSize = 100; // 250 chuncks
     const itemChunks = splitArrayIntoChunks(selectedItems, chunkSize);
 
     let allItems = [];
